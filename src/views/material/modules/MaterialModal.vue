@@ -30,6 +30,12 @@
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="品牌" data-step="1" data-title="品牌"
+                             data-intro="品牌">
+                  <a-input placeholder="请输入品牌" v-decorator.trim="[ 'brand']"/>
+                </a-form-item>
+              </a-col>
+              <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="规格" data-step="2" data-title="规格"
                              data-intro="规格不必填，比如：10克">
                   <a-input placeholder="请输入规格" v-decorator.trim="[ 'standard' ]"/>
@@ -101,45 +107,47 @@
                   </a-tree-select>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="序列号" data-step="8" data-title="序列号"
-                             data-intro="此处是商品的序列号开关，如果选择了有，则在采购入库单据需要录入该商品的序列号，在销售出库单据需要选择该商品的序列号进行出库">
-                  <a-select placeholder="有无序列号" v-decorator="[ 'enableSerialNumber' ]">
-                    <a-select-option value="1">有</a-select-option>
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="批号" data-step="9" data-title="批号"
-                             data-intro="此处是商品的批号开关，如果选择了有，则在采购入库单据需要录入该商品的批号和生产日期，在销售出库单据需要选择该商品的批号进行出库">
-                  <a-select placeholder="有无批号" v-decorator="[ 'enableBatchNumber' ]">
-                    <a-select-option value="1">有</a-select-option>
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="批号" data-step="9" data-title="批号"
-                             data-intro="选择批号信息">
-                  <a-select placeholder="有无批号" v-decorator="[ 'enableBatchNumber' ]">
-                    <a-select-option value="1">有</a-select-option>
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
+<!--              <a-col :md="6" :sm="24">-->
+<!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="序列号" data-step="8" data-title="序列号"-->
+<!--                             data-intro="此处是商品的序列号开关，如果选择了有，则在采购入库单据需要录入该商品的序列号，在销售出库单据需要选择该商品的序列号进行出库">-->
+<!--                  <a-select placeholder="有无序列号" v-decorator="[ 'enableSerialNumber' ]">-->
+<!--                    <a-select-option value="1">有</a-select-option>-->
+<!--                    <a-select-option value="0">无</a-select-option>-->
+<!--                  </a-select>-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
+<!--              <a-col :md="6" :sm="24">-->
+<!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="批号" data-step="9" data-title="批号"-->
+<!--                             data-intro="此处是商品的批号开关，如果选择了有，则在采购入库单据需要录入该商品的批号和生产日期，在销售出库单据需要选择该商品的批号进行出库">-->
+<!--                  <a-select placeholder="有无批号" v-decorator="[ 'enableBatchNumber' ]">-->
+<!--                    <a-select-option value="1">有</a-select-option>-->
+<!--                    <a-select-option value="0">无</a-select-option>-->
+<!--                  </a-select>-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
 
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="供应商" data-step="10" data-title="供应商"
-                             data-intro="请选择供应商信息">
-                  <!--                                    <j-select-multiple placeholder="请选择销售人员" v-model="personList.value" :options="personList.options"/>-->
+
+
+              <a-col :lg="6"  :sm="24">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="供应商" data-step="1" data-title="供应商"
+                             data-intro="供应商必须选择，如果发现需要选择的供应商尚未录入，可以在下拉框中点击新增供应商进行录入">
+                  <a-select placeholder="选择供应商" :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">
+<!--                    <div slot="dropdownRender" slot-scope="menu">-->
+<!--                      <v-nodes :vnodes="menu" />-->
+<!--                      <a-divider style="margin: 4px 0;" />-->
+<!--                      <div v-if="isTenant" style="padding: 4px 8px; cursor: pointer;"-->
+<!--                           @mousedown="e => e.preventDefault()" @click="addSupplier"><a-icon type="plus" /> 新增供应商</div>-->
+<!--                    </div>-->
+                    <a-select-option v-for="(item,index) in supList" :key="index" :value="item.id">
+                      {{ item.supplier }}
+                    </a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
-
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="电商链接" data-step="11" data-title="电商链接"
                              data-intro="淘宝 pdd 京东商品链接">
-                  <a-input placeholder="请输入链接" v-decorator.trim="[ 'itemLink' ]"/>
+                  <a-input placeholder="输入链接 多条英文逗号分割 " v-decorator.trim="[ 'links' ]"/>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
@@ -221,10 +229,11 @@
                 @valueChange="onValueChange"
                 @added="onAdded">
                 <template #buttonAfter>
-                  <a-button @click="batchSetPrice('purchase')">采购价-批量</a-button>
+                  <a-button @click="batchSetPrice('purchase')">集采价-批量</a-button>
+                  <a-button style="margin-left: 8px" @click="batchSetPrice('dropshipping')">代发价-批量</a-button>
                   <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">零售价-批量</a-button>
-                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>
-                  <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>
+<!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>-->
+<!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>-->
                 </template>
               </j-editable-table>
               <!-- 表单区域 -->
@@ -268,6 +277,7 @@
               </a-col>
             </a-row>
           </a-tab-pane>
+
           <a-tab-pane key="3" tab="库存数量" forceRender>
             <j-editable-table
               ref="editableDepotTable"
@@ -318,6 +328,8 @@
   import JImageUpload from '@/components/jeecg/JImageUpload'
   import JDate from '@/components/jeecg/JDate'
   import Vue from 'vue'
+  import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+  import { BillListMixin } from '@views/bill/mixins/BillListMixin'
   export default {
     name: "MaterialModal",
     components: {
@@ -332,6 +344,7 @@
         render: (h, ctx) => ctx.props.vnodes,
       }
     },
+    mixins:[BillListMixin],
     data () {
       return {
         title:"操作",
@@ -348,6 +361,7 @@
         barCodeSwitch: false, //生成条码开关
         maxBarCodeInfo: '', //最大条码
         prefixNo: 'material',
+        supList:[],//供应商列表
         sku: {
           manyColor: '多颜色',
           manySize: '多尺寸',
@@ -396,17 +410,20 @@
               title: '多属性', key: 'sku', width: '10%', type: FormTypes.input, defaultValue: '', readonly:true, placeholder: '点击生成条码赋值'
             },
             {
-              title: '采购价', key: 'purchaseDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+              title: '集采价', key: 'purchaseDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            },
+            {
+              title: '代发价', key: 'dropshippingDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             },
             {
               title: '零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            },
-            {
-              title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            },
-            {
-              title: '最低售价', key: 'lowDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             }
+            // {
+            //   title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            // },
+            // {
+            //   title: '最低售价', key: 'lowDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            // }
           ]
         },
         //库存数量表格
@@ -456,6 +473,7 @@
       this.loadTreeData();
       this.loadUnitListData();
       this.loadParseMaterialProperty();
+      this.initSupplier();
     },
     methods: {
       // 获取所有的editableTable实例
@@ -492,7 +510,7 @@
           }, 5)
         }
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'name', 'standard', 'unit', 'unitId', 'model', 'color',
+          this.form.setFieldsValue(pick(this.model, 'name', 'brand','standard', 'unit', 'unitId', 'model', 'color',
             'categoryId','enableSerialNumber','enableBatchNumber','expiryNum','weight','remark','mfrs','otherField1','otherField2','otherField3'))
           autoJumpNextInput('materialHeadModal')
           autoJumpNextInput('materialDetailModal')
@@ -517,11 +535,11 @@
           //编辑商品的时候多属性字段可以修改
           this.meTable.columns[2].readonly = false
           this.requestMeTableData(this.url.materialsExtendList, params, this.meTable)
-          this.requestDepotTableData(this.url.depotWithStock, { mId: this.model.id }, this.depotTable)
+          // this.requestDepotTableData(this.url.depotWithStock, { mId: this.model.id }, this.depotTable)
         } else {
           this.switchDisabled = false
           this.meTable.columns[2].readonly = true
-          this.requestDepotTableData(this.url.depotWithStock, { mId: 0 }, this.depotTable)
+          // this.requestDepotTableData(this.url.depotWithStock, { mId: 0 }, this.depotTable)
         }
       },
       /** 查询条码tab的数据 */
@@ -929,8 +947,9 @@
           let meTableData = []
           for (let i = 0; i < arr.length; i++) {
             let meInfo = {barCode: arr[i].barCode, commodityUnit: arr[i].commodityUnit, sku: arr[i].sku,
-              purchaseDecimal: arr[i].purchaseDecimal, commodityDecimal: arr[i].commodityDecimal,
-              wholesaleDecimal: arr[i].wholesaleDecimal, lowDecimal: arr[i].lowDecimal}
+              purchaseDecimal: arr[i].purchaseDecimal, dropshippingDecimal:arr[i].dropshippingDecimal,
+              commodityDecimal: arr[i].commodityDecimal, wholesaleDecimal: arr[i].wholesaleDecimal,
+              lowDecimal: arr[i].lowDecimal}
             if(batchType === 'purchase') {
               meInfo.purchaseDecimal = price-0
             } else if(batchType === 'commodity') {
@@ -939,6 +958,8 @@
               meInfo.wholesaleDecimal = price-0
             } else if(batchType === 'low') {
               meInfo.lowDecimal = price-0
+            } else if(batchType === 'dropshipping') {
+              meInfo.dropshippingDecimal = price-0
             }
             if(arr[i].id) {
               meInfo.id = arr[i].id

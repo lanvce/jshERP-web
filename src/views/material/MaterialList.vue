@@ -156,11 +156,11 @@
         columns: [
           {title: '条码', dataIndex: 'mBarCode', width: '8%'},
           {title: '名称', dataIndex: 'name', width: '10%', ellipsis:true},
+          {title: '品牌', dataIndex: 'brand', width: '10%', ellipsis:true},
           {title: '规格', dataIndex: 'standard', width: '6%', ellipsis:true},
           {title: '型号', dataIndex: 'model', width: '6%', ellipsis:true},
           {title: '颜色', dataIndex: 'color', width: '4%', ellipsis:true},
           {title: '类别', dataIndex: 'categoryName', width: '6%', ellipsis:true},
-          {title: '扩展信息', dataIndex: 'materialOther', width: '6%', ellipsis:true},
           {title: '单位', dataIndex: 'unit', width: '6%', ellipsis:true,
             customRender:function (t,r,index) {
               if (r) {
@@ -176,19 +176,21 @@
           {title: '保质期', dataIndex: 'expiryNum', width: '4%'},
        //   {title: '库存', dataIndex: 'stock', width: '5%'},
           {title: '供应商', dataIndex: 'supply', width: '5%'},
-          {title: '采购价', dataIndex: 'purchaseDecimal', width: '5%'},
+          {title: '其他', dataIndex: 'materialOther', width: '6%', ellipsis:true},
+          {title: '集采价', dataIndex: 'purchaseDecimal', width: '5%'},
+          {title: '批发价', dataIndex: 'dropshippingDecimal', width: '5%'},
           {title: '零售价', dataIndex: 'commodityDecimal', width: '5%'},
-          {title: '销售价', dataIndex: 'wholesaleDecimal', width: '5%'},
-          {title: '最低售价', dataIndex: 'lowDecimal', width: '5%'},
+          // {title: '销售价', dataIndex: 'wholesaleDecimal', width: '5%'},
+          // {title: '最低售价', dataIndex: 'lowDecimal', width: '5%'},
           {title: '状态', dataIndex: 'enabled', width: '4%', align: "center",
             scopedSlots: { customRender: 'customRenderEnabled' }
           },
-          {title: '序列号', dataIndex: 'enableSerialNumber', width: '4%', align: "center",
-            scopedSlots: { customRender: 'customRenderEnableSerialNumber' }
-          },
-          {title: '批号', dataIndex: 'enableBatchNumber', width: '3%', align: "center",
-            scopedSlots: { customRender: 'customRenderEnableBatchNumber' }
-          },
+          // {title: '序列号', dataIndex: 'enableSerialNumber', width: '4%', align: "center",
+          //   scopedSlots: { customRender: 'customRenderEnableSerialNumber' }
+          // },
+          // {title: '批号', dataIndex: 'enableBatchNumber', width: '3%', align: "center",
+          //   scopedSlots: { customRender: 'customRenderEnableBatchNumber' }
+          // },
           {
             title: '操作',
             dataIndex: 'action',
@@ -273,5 +275,5 @@
   }
 </script>
 <style scoped>
-  @import '~@assets/less/common.less'
+@import '~@assets/less/common.less'
 </style>

@@ -189,6 +189,12 @@
               </a-form-item>
             </a-col>
             -->
+            <a-col v-if="!scanStatus" :md="1"  style="padding: 0px">
+              <a-button @click="stopScan">导出</a-button>
+            </a-col>
+            <a-col v-if="!scanStatus" :md="1"  style="padding: 0px">
+              <a-button @click="stopScan">发送</a-button>
+            </a-col>
             <a-col :span="6">
               <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据日期">
                 {{model.operTimeStr}}
@@ -1006,12 +1012,14 @@
         purchaseOrderColumns: [
           { title: '条码', dataIndex: 'barCode'},
           { title: '名称', dataIndex: 'name'},
+          { title: '品牌', dataIndex: 'brand'},
           { title: '规格', dataIndex: 'standard'},
           { title: '型号', dataIndex: 'model'},
           { title: '颜色', dataIndex: 'color'},
           { title: '扩展信息', dataIndex: 'materialOther'},
           { title: '供应商', dataIndex: 'supply'},
-         // { title: '库存', dataIndex: 'stock'},
+          { title: '报价类型', dataIndex: 'quoteType'},
+          // { title: '库存', dataIndex: 'stock'},
           { title: '单位', dataIndex: 'unit'},
           { title: '多属性', dataIndex: 'sku'},
           { title: '数量', dataIndex: 'operNumber'},

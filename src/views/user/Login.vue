@@ -25,9 +25,9 @@
 
       <a-form-item>
         <a-checkbox v-decorator="['rememberMe', {initialValue: true, valuePropName: 'checked'}]" >自动登陆</a-checkbox>
-        <router-link v-if="registerFlag==='1'" :to="{ name: 'register'}" class="forge-password" style="float: right;margin-right: 10px;" >
-          注册租户
-        </router-link>
+<!--        <router-link v-if="registerFlag==='1'" :to="{ name: 'register'}" class="forge-password" style="float: right;margin-right: 10px;" >-->
+<!--          注册租户-->
+<!--        </router-link>-->
       </a-form-item>
 
       <a-form-item style="margin-top:24px">
