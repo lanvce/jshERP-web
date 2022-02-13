@@ -52,6 +52,8 @@
             <a-checkbox v-if="record.pushBtn.indexOf(4)>-1" value="4" :checked="record.btnStr?record.btnStr.indexOf(4)>-1:false" @change="onChange(record,'4')">启用禁用</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(5)>-1" value="5" :checked="record.btnStr?record.btnStr.indexOf(5)>-1:false" @change="onChange(record,'5')">打印</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(6)>-1" value="6" :checked="record.btnStr?record.btnStr.indexOf(6)>-1:false" @change="onChange(record,'6')">作废</a-checkbox>
+            <a-checkbox v-if="record.pushBtn.indexOf(8)>-1" value="8" :checked="record.btnStr?record.btnStr.indexOf(8)>-1:false" @change="onChange(record,'8')">下载</a-checkbox>
+            <a-checkbox v-if="record.pushBtn.indexOf(9)>-1" value="9" :checked="record.btnStr?record.btnStr.indexOf(9)>-1:false" @change="onChange(record,'9')">发送</a-checkbox>
           </span>
         </a-table>
       </div>

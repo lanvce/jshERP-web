@@ -189,11 +189,15 @@
               </a-form-item>
             </a-col>
             -->
-            <a-col v-if="!scanStatus" :md="1"  style="padding: 0px">
-              <a-button @click="stopScan">导出</a-button>
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据名称">
+                {{model.name}}
+              </a-form-item>
             </a-col>
-            <a-col v-if="!scanStatus" :md="1"  style="padding: 0px">
-              <a-button @click="stopScan">发送</a-button>
+            <a-col :span="6">
+              <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户">
+                {{model.customerName}}
+              </a-form-item>
             </a-col>
             <a-col :span="6">
               <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="单据日期">

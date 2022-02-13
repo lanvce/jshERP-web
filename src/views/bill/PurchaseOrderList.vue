@@ -8,6 +8,11 @@
           <a-form layout="inline" @keyup.enter.native="searchQuery">
             <a-row :gutter="24">
               <a-col :md="6" :sm="24">
+                <a-form-item label="单据名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                  <a-input placeholder="请输入单据名称 可模糊搜索" v-model="queryParam.name"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :md="6" :sm="24">
                 <a-form-item label="单据编号" :labelCol="labelCol" :wrapperCol="wrapperCol">
                   <a-input placeholder="请输入单据编号" v-model="queryParam.number"></a-input>
                 </a-form-item>
@@ -30,15 +35,27 @@
                 </a-form-item>
               </a-col>
               <template v-if="toggleSearchStatus">
+<!--                <a-col :md="6" :sm="24">-->
+<!--                  <a-form-item label="供应商" :labelCol="labelCol" :wrapperCol="wrapperCol">-->
+<!--                    <a-select placeholder="选择供应商" showSearch optionFilterProp="children" v-model="queryParam.organId">-->
+<!--                      <a-select-option v-for="(item,index) in supList" :key="index" :value="item.id">-->
+<!--                        {{ item.supplier }}-->
+<!--                      </a-select-option>-->
+<!--                    </a-select>-->
+<!--                  </a-form-item>-->
+<!--                </a-col>-->
+
+
                 <a-col :md="6" :sm="24">
-                  <a-form-item label="供应商" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                    <a-select placeholder="选择供应商" showSearch optionFilterProp="children" v-model="queryParam.organId">
-                      <a-select-option v-for="(item,index) in supList" :key="index" :value="item.id">
+                  <a-form-item label="客户" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                    <a-select placeholder="选择客户" showSearch optionFilterProp="children" v-model="queryParam.organId">
+                      <a-select-option v-for="(item,index) in cusList" :key="index" :value="item.id">
                         {{ item.supplier }}
                       </a-select-option>
                     </a-select>
                   </a-form-item>
                 </a-col>
+
                 <a-col :md="6" :sm="24">
                   <a-form-item label="操作员" :labelCol="labelCol" :wrapperCol="wrapperCol">
                     <a-select placeholder="选择操作员" showSearch optionFilterProp="children" v-model="queryParam.creator">
@@ -100,6 +117,10 @@
               <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleEdit(record)">编辑</a>
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
               <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleCopyAdd(record)">复制</a>
+                 <a-divider v-if="btnEnableList.indexOf(8)>-1" type="vertical" />
+               <a v-if="btnEnableList.indexOf(8)>-1" @click="myHandleCopyAdd(record)">下载</a>
+              <a-divider v-if="btnEnableList.indexOf(9)>-1" type="vertical" />
+              <a v-if="btnEnableList.indexOf(9)>-1" @click="myHandleCopyAdd(record)">发送</a>
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
               <a-popconfirm v-if="btnEnableList.indexOf(1)>-1" title="确定删除吗?" @confirm="() => myHandleDelete(record)">
                 <a>删除</a>
@@ -148,7 +169,8 @@
           roleType: Vue.ls.get('roleType'),
           organId: "",
           depotId: "",
-          creator: ""
+          creator: "",
+          name:""
         },
         labelCol: {
           span: 5
@@ -160,6 +182,7 @@
         // 表头
         columns: [
           //{ title: '供应商', dataIndex: 'organName',width:120, ellipsis:true},
+          { title: '单据名称', dataIndex: 'name',width:120, ellipsis:true},
           { title: '单据编号', dataIndex: 'number',width:120,
             customRender:function (text,record,index) {
               if(record.linkNumber) {
@@ -169,6 +192,7 @@
               }
             }
           },
+          { title: '客户', dataIndex: 'organName',width:120, ellipsis:true},
           { title: '商品信息', dataIndex: 'materialsList',width:220, ellipsis:true,
             customRender:function (text,record,index) {
               if(text) {
@@ -207,8 +231,8 @@
       }
     },
     created() {
-      this.initSupplier()
       this.initUser()
+      this.initCustomer()
     },
     computed: {
     },
