@@ -111,12 +111,17 @@
           {dataIndex: 'sku', title: '多属性', width: 80},
           //{dataIndex: 'stock', title: '库存', width: 60},
           {dataIndex: 'expand', title: '扩展信息', width: 80, ellipsis:true},
-          {dataIndex: 'enableSerialNumber', title: '序列号', width: 60, align: "center",
-            scopedSlots: { customRender: 'customRenderEnableSerialNumber' }
-          },
-          {dataIndex: 'enableBatchNumber', title: '批号', width: 50, align: "center",
-            scopedSlots: { customRender: 'customRenderEnableBatchNumber' }
-          }
+          {dataIndex: 'supplier', title: '供应商', width: 80, ellipsis:true},
+          {dataIndex: 'purchaseDecimal', title: '集采价', width: 80, ellipsis:true},
+          {dataIndex: 'dropshippingDecimal', title: '代发价', width: 80, ellipsis:true},
+
+
+          // {dataIndex: 'enableSerialNumber', title: '序列号', width: 60, align: "center",
+          //   scopedSlots: { customRender: 'customRenderEnableSerialNumber' }
+          // },
+          // {dataIndex: 'enableBatchNumber', title: '批号', width: 50, align: "center",
+          //   scopedSlots: { customRender: 'customRenderEnableBatchNumber' }
+          // }
         ],
         scrollTrigger: {},
         dataSource: [],

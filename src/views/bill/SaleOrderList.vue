@@ -69,8 +69,8 @@
           <a-dropdown>
             <a-menu slot="overlay">
               <a-menu-item key="1" v-if="btnEnableList.indexOf(1)>-1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
-              <a-menu-item key="2" v-if="btnEnableList.indexOf(2)>-1" @click="batchSetStatus(1)"><a-icon type="check"/>审核</a-menu-item>
-              <a-menu-item key="3" v-if="btnEnableList.indexOf(7)>-1" @click="batchSetStatus(0)"><a-icon type="stop"/>反审核</a-menu-item>
+              <a-menu-item key="2" v-if="btnEnableList.indexOf(11)>-1" @click="batchSetStatus(3)"><a-icon type="check"/>完成销售</a-menu-item>
+              <a-menu-item key="3" v-if="btnEnableList.indexOf(12)>-1" @click="batchSetStatus(2)"><a-icon type="stop"/>撤销完成</a-menu-item>
             </a-menu>
             <a-button>
               批量操作 <a-icon type="down" />
@@ -106,10 +106,11 @@
                 <a>删除</a>
               </a-popconfirm>
             </span>            <template slot="customRenderStatus" slot-scope="status">
-              <a-tag v-if="status == '0'" color="red">未审核</a-tag>
-              <a-tag v-if="status == '1'" color="green">已审核</a-tag>
-              <a-tag v-if="status == '2'" color="cyan">完成销售</a-tag>
-              <a-tag v-if="status == '3'" color="blue">部分销售</a-tag>
+<!--              <a-tag v-if="status == '0'" color="red">未审核</a-tag>-->
+<!--              <a-tag v-if="status == '1'" color="green">已审核</a-tag>-->
+              <a-tag v-if="status == '2'" color="cyan">正在销售</a-tag>
+              <a-tag v-if="status == '3'" color="green">完成销售</a-tag>
+            <!--              <a-tag v-if="status == '3'" color="blue">部分销售</a-tag>-->
             </template>
           </a-table>
         </div>
@@ -143,11 +144,13 @@
           number: "",
           materialParam: "",
           type: "其它",
-          subType: "销售订单",
+          subType: "采购订单",
           roleType: Vue.ls.get('roleType'),
           organId: "",
           depotId: "",
-          creator: ""
+          creator: "",
+          name:"",
+          status:"2,3"
         },
         labelCol: {
           span: 5

@@ -128,22 +128,24 @@
 
 
 
-              <a-col :lg="6"  :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="供应商" data-step="1" data-title="供应商"
-                             data-intro="供应商必须选择，如果发现需要选择的供应商尚未录入，可以在下拉框中点击新增供应商进行录入">
-                  <a-select placeholder="选择供应商" :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">
+<!--              <a-col :md="6" :sm="24">-->
+<!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="供应商" data-step="1" data-title="供应商"-->
+<!--                             data-intro="供应商必须选择，如果发现需要选择的供应商尚未录入，可以在下拉框中点击新增供应商进行录入">-->
+<!--                  <a-select placeholder="选择供应商" :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">-->
 <!--                    <div slot="dropdownRender" slot-scope="menu">-->
 <!--                      <v-nodes :vnodes="menu" />-->
 <!--                      <a-divider style="margin: 4px 0;" />-->
-<!--                      <div v-if="isTenant" style="padding: 4px 8px; cursor: pointer;"-->
+
+<!--                      <div  style="padding: 4px 8px; cursor: pointer;"-->
 <!--                           @mousedown="e => e.preventDefault()" @click="addSupplier"><a-icon type="plus" /> 新增供应商</div>-->
 <!--                    </div>-->
-                    <a-select-option v-for="(item,index) in supList" :key="index" :value="item.id">
-                      {{ item.supplier }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
+<!--                    <a-select-option v-for="(item,index) in supList" :key="index" :value="item.id">-->
+<!--                      {{ item.supplier }}-->
+<!--                    </a-select-option>-->
+<!--                  </a-select>-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
+
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="电商链接" data-step="11" data-title="电商链接"
                              data-intro="淘宝 pdd 京东商品链接">
@@ -229,9 +231,10 @@
                 @valueChange="onValueChange"
                 @added="onAdded">
                 <template #buttonAfter>
+<!--                  <a-button @click="batchSetPrice('cost')">成本-批量</a-button>-->
                   <a-button @click="batchSetPrice('purchase')">集采价-批量</a-button>
                   <a-button style="margin-left: 8px" @click="batchSetPrice('dropshipping')">代发价-批量</a-button>
-                  <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">零售价-批量</a-button>
+<!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">零售价-批量</a-button>-->
 <!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>-->
 <!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>-->
                 </template>
@@ -361,7 +364,6 @@
         barCodeSwitch: false, //生成条码开关
         maxBarCodeInfo: '', //最大条码
         prefixNo: 'material',
-        supList:[],//供应商列表
         sku: {
           manyColor: '多颜色',
           manySize: '多尺寸',
@@ -403,21 +405,30 @@
                 { handler: this.validateBarCode}]
             },
             {
+              title: '供应商', key: 'supplierId', width: '8%', type: FormTypes.input, defaultValue: '',  placeholder: '请选择${title}'
+            },
+            {
               title: '单位', key: 'commodityUnit', width: '8%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}',
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
-            {
-              title: '多属性', key: 'sku', width: '10%', type: FormTypes.input, defaultValue: '', readonly:true, placeholder: '点击生成条码赋值'
-            },
+
             {
               title: '集采价', key: 'purchaseDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             },
             {
               title: '代发价', key: 'dropshippingDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             },
-            {
-              title: '零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            }
+            // {
+            //   title: '多属性', key: 'sku', width: '10%', type: FormTypes.input, defaultValue: '', readonly:true, placeholder: '点击生成条码赋值'
+            // },
+
+            // {
+            //   title: '成本', key: 'costDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            // },
+
+            // {
+            //   title: '零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            // }
             // {
             //   title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             // },
@@ -947,8 +958,11 @@
           let meTableData = []
           for (let i = 0; i < arr.length; i++) {
             let meInfo = {barCode: arr[i].barCode, commodityUnit: arr[i].commodityUnit, sku: arr[i].sku,
-              purchaseDecimal: arr[i].purchaseDecimal, dropshippingDecimal:arr[i].dropshippingDecimal,
-              commodityDecimal: arr[i].commodityDecimal, wholesaleDecimal: arr[i].wholesaleDecimal,
+              purchaseDecimal: arr[i].purchaseDecimal,
+              dropshippingDecimal:arr[i].dropshippingDecimal,
+              costDecimal:arr[i].costDecimal,
+              commodityDecimal: arr[i].commodityDecimal,
+              wholesaleDecimal: arr[i].wholesaleDecimal,
               lowDecimal: arr[i].lowDecimal}
             if(batchType === 'purchase') {
               meInfo.purchaseDecimal = price-0
@@ -960,6 +974,8 @@
               meInfo.lowDecimal = price-0
             } else if(batchType === 'dropshipping') {
               meInfo.dropshippingDecimal = price-0
+            } else if(batchType === 'cost') {
+              meInfo.costDecimal = price-0
             }
             if(arr[i].id) {
               meInfo.id = arr[i].id
@@ -1006,18 +1022,6 @@
             }
           }
         });
-      },
-
-      initSupplier(){
-        findBySelectSup({}).then((res)=>{
-          if(res && res.code===200) {
-            if(res.data) {
-           console.log(res.data)
-            }
-
-          }
-        }
-        )
       },
 
       loadParseMaterialProperty() {

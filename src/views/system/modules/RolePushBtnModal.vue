@@ -47,13 +47,17 @@
           <span slot="action" slot-scope="text, record">
             <a-checkbox v-if="record.pushBtn.indexOf(1)>-1" value="1" :checked="record.btnStr?record.btnStr.indexOf(1)>-1:false" @change="onChange(record,'1')">编辑</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(2)>-1" value="2" :checked="record.btnStr?record.btnStr.indexOf(2)>-1:false" @change="onChange(record,'2')">审核</a-checkbox>
-            <a-checkbox v-if="record.pushBtn.indexOf(7)>-1" value="7" :checked="record.btnStr?record.btnStr.indexOf(7)>-1:false" @change="onChange(record,'7')">反审核</a-checkbox>
+            <a-checkbox v-if="record.pushBtn.indexOf(7)>-1" value="7" :checked="record.btnStr?record.btnStr.indexOf(7)>-1:false" @change="onChange(record,'7')">撤回审核</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(3)>-1" value="3" :checked="record.btnStr?record.btnStr.indexOf(3)>-1:false" @change="onChange(record,'3')">导入导出</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(4)>-1" value="4" :checked="record.btnStr?record.btnStr.indexOf(4)>-1:false" @change="onChange(record,'4')">启用禁用</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(5)>-1" value="5" :checked="record.btnStr?record.btnStr.indexOf(5)>-1:false" @change="onChange(record,'5')">打印</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(6)>-1" value="6" :checked="record.btnStr?record.btnStr.indexOf(6)>-1:false" @change="onChange(record,'6')">作废</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(8)>-1" value="8" :checked="record.btnStr?record.btnStr.indexOf(8)>-1:false" @change="onChange(record,'8')">下载</a-checkbox>
             <a-checkbox v-if="record.pushBtn.indexOf(9)>-1" value="9" :checked="record.btnStr?record.btnStr.indexOf(9)>-1:false" @change="onChange(record,'9')">发送</a-checkbox>
+
+            <a-checkbox v-if="record.pushBtn.indexOf(10)>-1" value="10" :checked="record.btnStr?record.btnStr.indexOf(10)>-1:false" @change="onChange(record,'10')">转到销售</a-checkbox>
+            <a-checkbox v-if="record.pushBtn.indexOf(11)>-1" value="11" :checked="record.btnStr?record.btnStr.indexOf(11)>-1:false" @change="onChange(record,'11')">完成销售</a-checkbox>
+            <a-checkbox v-if="record.pushBtn.indexOf(12)>-1" value="12" :checked="record.btnStr?record.btnStr.indexOf(12)>-1:false" @change="onChange(record,'12')">撤销完成</a-checkbox>
           </span>
         </a-table>
       </div>

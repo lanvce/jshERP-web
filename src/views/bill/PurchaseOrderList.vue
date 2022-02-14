@@ -86,7 +86,8 @@
             <a-menu slot="overlay">
               <a-menu-item key="1" v-if="btnEnableList.indexOf(1)>-1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
               <a-menu-item key="2" v-if="btnEnableList.indexOf(2)>-1" @click="batchSetStatus(1)"><a-icon type="check"/>审核</a-menu-item>
-              <a-menu-item key="3" v-if="btnEnableList.indexOf(7)>-1" @click="batchSetStatus(0)"><a-icon type="stop"/>反审核</a-menu-item>
+              <a-menu-item key="3" v-if="btnEnableList.indexOf(7)>-1" @click="batchSetStatus(0)"><a-icon type="stop"/>撤回审核</a-menu-item>
+              <a-menu-item key="4" v-if="btnEnableList.indexOf(10)>-1" @click="batchSetStatus(2)"><a-icon type="check"/>转到销售</a-menu-item>
             </a-menu>
             <a-button>
               批量操作 <a-icon type="down" />
@@ -129,8 +130,8 @@
             <template slot="customRenderStatus" slot-scope="status">
               <a-tag v-if="status == '0'" color="red">未审核</a-tag>
               <a-tag v-if="status == '1'" color="green">已审核</a-tag>
-              <a-tag v-if="status == '2'" color="cyan">完成采购</a-tag>
-              <a-tag v-if="status == '3'" color="blue">部分采购</a-tag>
+              <a-tag v-if="status == '2'" color="cyan">正在销售</a-tag>
+              <a-tag v-if="status == '3'" color="blue">销售完成</a-tag>
             </template>
           </a-table>
         </div>

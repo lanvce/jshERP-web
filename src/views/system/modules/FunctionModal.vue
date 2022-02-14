@@ -68,13 +68,16 @@
           options: [
             { text: '编辑', value: '1' },
             { text: '审核', value: '2' },
-            { text: '反审核', value: '7' },
+            { text: '撤回审核', value: '7' },
             { text: '导入导出', value: '3' },
             { text: '启用禁用', value: '4' },
             { text: '打印', value: '5' },
             { text: '作废', value: '6' },
             { text: '下载', value: '8' },
-            { text: '发送', value: '9' }
+            { text: '发送', value: '9' },
+            { text: '转到销售', value: '10' },
+            { text: '完成销售', value: '11' },
+            { text: '撤销完成', value: '12' }
           ],
           value: ''
         },

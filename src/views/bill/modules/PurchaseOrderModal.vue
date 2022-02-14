@@ -41,7 +41,7 @@
             <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户" data-step="1" data-title="客户"
                          data-intro="客户必须选择，如果发现需要选择的客户尚未录入，可以在下拉框中点击新增客户进行录入。
                           特别注意，客户如果录入之后在下拉框中不显示，请检查是否给当前用户分配对应的客户权限">
-              <a-select placeholder="选择客户" v-decorator="[ 'organName', validatorRules.organId ]"
+              <a-select placeholder="选择客户" v-decorator="[ 'organId', validatorRules.organId ]"
                         :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">
                 <div slot="dropdownRender" slot-scope="menu">
                   <v-nodes :vnodes="menu" />
@@ -139,12 +139,14 @@
         </a-row>
       </a-form>
     </a-spin>
+    <customer-modal ref="customerModalForm" @ok="customerModalFormOk"></customer-modal>
     <vendor-modal ref="vendorModalForm" @ok="vendorModalFormOk"></vendor-modal>
   </j-modal>
 </template>
 <script>
   import pick from 'lodash.pick'
   import VendorModal from '../../system/modules/VendorModal'
+  import CustomerModal from '../../system/modules/CustomerModal'
   import { FormTypes } from '@/utils/JEditableTableUtil'
   import { JEditableTableMixin } from '@/mixins/JEditableTableMixin'
   import { BillModalMixin } from '../mixins/BillModalMixin'
@@ -156,6 +158,7 @@
     name: "PurchaseOrderModal",
     mixins: [JEditableTableMixin,BillModalMixin],
     components: {
+      CustomerModal,
       VendorModal,
       JUpload,
       JDate,
@@ -255,7 +258,7 @@
           this.model.operTime = this.model.operTimeStr
           this.fileList = this.model.fileName
           this.$nextTick(() => {
-            this.form.setFieldsValue(pick(this.model,'organId', 'operTime', 'number', 'remark','name','organName',
+            this.form.setFieldsValue(pick(this.model,'organId', 'operTime', 'number', 'remark','name',
             'discount','discountMoney','discountLastMoney'))
           });
           // 加载子表数据
@@ -274,7 +277,6 @@
         }
         this.initSupplier()
         this.initCustomer()
-
       },
       /** 整理成formData */
       classifyIntoFormData(allValues) {
