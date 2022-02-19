@@ -78,7 +78,7 @@ export const BillListMixin = {
     },
     removeStatusColumn() {
       //没有审核反审核权限的时候直接移除状态列
-      if(this.btnEnableList.indexOf(2)===-1 && this.btnEnableList.indexOf(7)===-1) {
+      if(this.btnEnableList && this.btnEnableList.indexOf(2)===-1 && this.btnEnableList.indexOf(7)===-1) {
         let statusIndex = 0
         for(let i=0; i<this.columns.length; i++){
           if(this.columns[i].dataIndex === 'status') {
@@ -92,8 +92,20 @@ export const BillListMixin = {
     initSupplier() {
       let that = this;
       findBySelectSup({}).then((res)=>{
-        if(res) {
+        if(res instanceof Array) {
           that.supList = res;
+          if(that.meTable && that.meTable.columns && that.meTable.columns.find(i => i.key === 'supplierId')){
+            that.meTable.columns.find(i => i.key === 'supplierId').options = res.map(item=>{
+                if (item) {
+                  return {
+                    ...item,
+                    text: item.text || item.title || item.supplier,
+                    title: item.text || item.title || item.supplier,
+                    value: item.value|| item.id,
+                  }
+                }
+            })
+          }
         }
       });
     },

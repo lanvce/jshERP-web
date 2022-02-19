@@ -104,8 +104,10 @@ const findBillDetailByNumber = (params)=>getAction("/depotHead/getDetailByNumber
 const findStockByDepotAndBarCode = (params)=>getAction("/depotItem/findStockByDepotAndBarCode",params);
 const getBatchNumberList = (params)=>getAction("/depotItem/getBatchNumberList",params);
 const findFinancialDetailByNumber = (params)=>getAction("/accountHead/getDetailByNumber",params);
+const sendDepotItemExcel = (params) => getAction("/depotItem/excel/send",params);
 
 export {
+  sendDepotItemExcel,
   getBuyAndSaleStatistics,
   buyOrSalePrice,
   checkTenant,
@@ -187,7 +189,8 @@ export {
   findBillDetailByNumber,
   findStockByDepotAndBarCode,
   getBatchNumberList,
-  findFinancialDetailByNumber
+  findFinancialDetailByNumber,
+  querySupplierList
 }
 
 

@@ -1,6 +1,8 @@
 import { FormTypes, getListData } from '@/utils/JEditableTableUtil'
-import {findBySelectSup,findBySelectCus,findBySelectRetail,getMaterialByBarCode,findStockByDepotAndBarCode,getAccount,
-  getPersonByNumType, getBatchNumberList} from '@/api/api'
+import {
+  findBySelectSup, findBySelectCus, findBySelectRetail, getMaterialByBarCode, findStockByDepotAndBarCode, getAccount,
+  getPersonByNumType, getBatchNumberList, querySupplierList
+} from '@/api/api'
 import { getAction,putAction } from '@/api/manage'
 import { getMpListShort, getNowFormatDateTime } from "@/utils/util"
 import { USER_INFO } from "@/store/mutation-types"
@@ -131,8 +133,20 @@ export const BillModalMixin = {
     initSupplier() {
       let that = this;
       findBySelectSup({}).then((res)=>{
-        if(res) {
+        if(res instanceof Array) {
           that.supList = res;
+          if(that.meTable && that.meTable.columns && that.meTable.columns.find(i => i.key === 'supplierId')){
+            that.meTable.columns.find(i => i.key === 'supplierId').options = res.map(item=>{
+              if (item) {
+                return {
+                  ...item,
+                  text: item.text || item.title || item.supplier,
+                  title: item.text || item.title || item.supplier,
+                  value: item.value|| item.id,
+                }
+              }
+            })
+          }
         }
       });
     },
@@ -343,6 +357,7 @@ export const BillModalMixin = {
                   for (let i = 0; i < mList.length; i++) {
                     let mInfo = mList[i]
                     this.changeColumnShow(mInfo)
+                    this.setSupplier(mInfo)
                     let mObj = this.parseInfoToObj(mInfo)
                     mObj.depotId = mInfo.depotId
                     mObj.stock = mInfo.stock
@@ -368,9 +383,11 @@ export const BillModalMixin = {
                   if (res && res.code === 200) {
                     let mArr = []
                     let mInfo = mList[0]
+                    this.setSupplier(mInfo)
                     this.changeColumnShow(mInfo)
                     let mInfoEx = this.parseInfoToObj(mInfo)
                     mInfoEx.stock = res.data.stock
+                    mInfoEx.purchaseType = 'batchPurchase'
                     let mObj = {
                       rowKey: row.id,
                       values: mInfoEx
@@ -476,6 +493,20 @@ export const BillModalMixin = {
           target.recalcAllStatisticsColumns()
           that.autoChangePrice(target)
           break;
+        case 'purchaseType':
+          operNumber = row.operNumber-0 //数量
+          taxRate = row.taxRate-0 //税率
+          allPrice = (row.unitPrice*operNumber).toFixed(2)-0
+          taxMoney =((row.taxRate*0.01)*allPrice).toFixed(2)-0
+          taxLastMoney = (allPrice + taxMoney).toFixed(2)-0
+          target.setValues([{rowKey: row.id,
+            values: {
+              taxMoney: taxMoney,
+              allPrice: allPrice,
+              taxLastMoney: taxLastMoney
+          }}])
+          target.recalcAllStatisticsColumns()
+          that.autoChangePrice(target)
       }
     },
     //转为商品对象
@@ -494,7 +525,22 @@ export const BillModalMixin = {
         allPrice: mInfo.billPrice,
         taxRate: 0,
         taxMoney: 0,
-        taxLastMoney: mInfo.billPrice
+        taxLastMoney: mInfo.billPrice,
+        dropshippingDecimal:mInfo.dropshippingDecimal,
+        supplier:mInfo.supplier,
+        supplierId:mInfo.supplierId
+      }
+    },
+    setSupplier(info){
+      let list=this.supList;
+      for (let i = 0; i < list.length; i++) {
+        let sup=list[i];
+        console.log(JSON.stringify(sup));
+        let supplierName=sup.supplier;
+
+        if (info.supplierId==sup.id){
+          info.supplier=supplierName;
+        }
       }
     },
     //使得型号、颜色、扩展信息、sku等为隐藏
@@ -532,14 +578,14 @@ export const BillModalMixin = {
       this.autoChangePrice(target)
     },
     //根据仓库和条码查询库存
-    getStockByDepotBarCode(row, target){
-      findStockByDepotAndBarCode({ depotId: row.depotId, barCode: row.barCode }).then((res) => {
-        if (res && res.code === 200) {
-          target.setValues([{rowKey: row.id, values: {stock: res.data.stock}}])
-          target.recalcAllStatisticsColumns()
-        }
-      })
-    },
+    // getStockByDepotBarCode(row, target){
+    //   findStockByDepotAndBarCode({ depotId: row.depotId, barCode: row.barCode }).then((res) => {
+    //     if (res && res.code === 200) {
+    //       target.setValues([{rowKey: row.id, values: {stock: res.data.stock}}])
+    //       target.recalcAllStatisticsColumns()
+    //     }
+    //   })
+    // },
     //改变优惠、本次付款、欠款的值
     autoChangePrice(target) {
       let allTaxLastMoney = target.statisticsColumns.taxLastMoney-0

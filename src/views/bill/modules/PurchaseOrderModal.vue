@@ -86,6 +86,7 @@
           :actionButton="true"
           :dragSort="true"
           @valueChange="onValueChange"
+          @added="onAdded"
           @deleted="onDeleted">
           <template #buttonAfter>
             <a-row :gutter="24" style="float:left;" data-step="4" data-title="扫码录入" data-intro="此功能支持扫码枪扫描商品条码进行录入">
@@ -196,7 +197,7 @@
           loading: false,
           dataSource: [],
           columns: [
-            { title: '仓库名称', key: 'depotId', width: '7%', type: FormTypes.hidden },
+            // { title: '仓库名称', key: 'depotId', width: '7%', type: FormTypes.hidden },
             { title: '条码', key: 'barCode', width: '8%', type: FormTypes.popupJsh, kind: 'material', multi: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
@@ -208,12 +209,14 @@
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
            // { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
             { title: '供应商', key: 'supplier', width: '5%', type: FormTypes.normal },
+            { title: '', key: 'supplierId', width: '0%', type: FormTypes.normal},
             { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
             { title: '多属性', key: 'sku', width: '4%', type: FormTypes.normal },
             { title: '数量', key: 'operNumber', width: '5%', type: FormTypes.inputNumber, statistics: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
-            { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,options: [{"text":"集采","value":"batchPurchase","selected":true},{"text":"代发","value":"dropshipping"}] },
+            { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,
+              options: [{"text":"集采","value":"batchPurchase","selected":true},{"text":"代发","value":"dropshipping"}] },
             { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber },
             { title: '金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true },
             { title: '税率', key: 'taxRate', width: '3%', type: FormTypes.inputNumber,placeholder: '%'},

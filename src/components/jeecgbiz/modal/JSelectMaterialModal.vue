@@ -111,7 +111,8 @@
           {dataIndex: 'sku', title: '多属性', width: 80},
           //{dataIndex: 'stock', title: '库存', width: 60},
           {dataIndex: 'expand', title: '扩展信息', width: 80, ellipsis:true},
-          {dataIndex: 'supplier', title: '供应商', width: 80, ellipsis:true},
+          {dataIndex: 'supplier', title: '', width: 0, ellipsis:true},
+          {dataIndex: 'supplierName', title: '供应商名', width: 80, ellipsis:true},
           {dataIndex: 'purchaseDecimal', title: '集采价', width: 80, ellipsis:true},
           {dataIndex: 'dropshippingDecimal', title: '代发价', width: 80, ellipsis:true},
 

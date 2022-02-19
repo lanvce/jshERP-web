@@ -119,9 +119,9 @@
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
               <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleCopyAdd(record)">复制</a>
                  <a-divider v-if="btnEnableList.indexOf(8)>-1" type="vertical" />
-               <a v-if="btnEnableList.indexOf(8)>-1" @click="myHandleCopyAdd(record)">下载</a>
-              <a-divider v-if="btnEnableList.indexOf(9)>-1" type="vertical" />
-              <a v-if="btnEnableList.indexOf(9)>-1" @click="myHandleCopyAdd(record)">发送</a>
+              <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleDownload(record)">下载</a>
+              <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
+              <a v-if="btnEnableList.indexOf(1)>-1" @click="myHandleSend(record)">发送</a>
               <a-divider v-if="btnEnableList.indexOf(1)>-1" type="vertical" />
               <a-popconfirm v-if="btnEnableList.indexOf(1)>-1" title="确定删除吗?" @confirm="() => myHandleDelete(record)">
                 <a>删除</a>
@@ -151,6 +151,8 @@
   import { BillListMixin } from './mixins/BillListMixin'
   import JDate from '@/components/jeecg/JDate'
   import Vue from 'vue'
+  import { sendDepotItemExcel} from "@api/api";
+  import {downloadFile} from "@api/manage";
   export default {
     name: "PurchaseOrderList",
     mixins:[JeecgListMixin,BillListMixin],
@@ -227,7 +229,8 @@
           list: "/depotHead/list",
           delete: "/depotHead/delete",
           deleteBatch: "/depotHead/deleteBatch",
-          batchSetStatusUrl: "/depotHead/batchSetStatus"
+          batchSetStatusUrl: "/depotHead/batchSetStatus",
+          downloadExcel:'/depotItem/excel/download'
         }
       }
     },
@@ -238,6 +241,14 @@
     computed: {
     },
     methods: {
+      myHandleDownload(record){
+        downloadFile(this.url.downloadExcel, record.number+'报价单', {id:record.id})
+      },
+      myHandleSend(record){
+        sendDepotItemExcel({id:record.id}).then(res=>{
+          console.log('send')
+        })
+      },
     }
   }
 </script>
