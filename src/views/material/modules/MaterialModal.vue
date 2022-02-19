@@ -229,6 +229,7 @@
                 :rowSelection="true"
                 :actionButton="true"
                 @valueChange="onValueChange"
+                @addSupplier="addSupplier"
                 @added="onAdded">
                 <template #buttonAfter>
 <!--                  <a-button @click="batchSetPrice('cost')">成本-批量</a-button>-->
@@ -316,6 +317,7 @@
       </a-form>
     </a-spin>
     <unit-modal ref="unitModalForm" @ok="unitModalFormOk"></unit-modal>
+    <vendor-modal ref="vendorModalForm" @ok="vendorModalFormOk"></vendor-modal>
   </j-modal>
 </template>
 <script>
@@ -333,12 +335,16 @@
   import Vue from 'vue'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import { BillListMixin } from '@views/bill/mixins/BillListMixin'
+  import { BillModalMixin} from "@views/bill/mixins/BillModalMixin";
+  import VendorModal from "@views/system/modules/VendorModal";
+
   export default {
     name: "MaterialModal",
     components: {
       BatchSetPriceModal,
       BatchSetStockModal,
       UnitModal,
+      VendorModal,
       JImageUpload,
       JDate,
       JEditableTable,
@@ -347,7 +353,7 @@
         render: (h, ctx) => ctx.props.vnodes,
       }
     },
-    mixins:[BillListMixin],
+    mixins:[BillListMixin, BillModalMixin],
     data () {
       return {
         title:"操作",
@@ -405,7 +411,8 @@
                 { handler: this.validateBarCode}]
             },
             {
-              title: '供应商', key: 'supplierId', width: '8%', type: FormTypes.input, defaultValue: '',  placeholder: '请选择${title}'
+              title: '供应商', key: 'supplierId', width: '10%', type: FormTypes.select, defaultValue: '',  placeholder: '请选择${title}',
+              options:[], allowSearch:false,
             },
             {
               title: '单位', key: 'commodityUnit', width: '8%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}',

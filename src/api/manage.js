@@ -127,13 +127,13 @@ export function downloadFile(url, fileName, parameter) {
       return
     }
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
-      window.navigator.msSaveBlob(new Blob([data]), fileName)
+      window.navigator.msSaveBlob(new Blob([data]), fileName+'.xlsx')
     } else {
       let url = window.URL.createObjectURL(new Blob([data]))
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = url
-      link.setAttribute('download', fileName)
+      link.setAttribute('download', fileName+'.xlsx')
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link) //下载完成移除元素
