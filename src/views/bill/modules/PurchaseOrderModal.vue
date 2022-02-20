@@ -217,7 +217,7 @@
             },
             { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,
               options: [{"text":"集采","value":"batchPurchase","selected":true},{"text":"代发","value":"dropshipping"}] },
-            { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber },
+            { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber ,readonly: true},
             { title: '金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true },
             { title: '税率', key: 'taxRate', width: '3%', type: FormTypes.inputNumber,placeholder: '%'},
             { title: '税额', key: 'taxMoney', width: '5%', type: FormTypes.inputNumber, readonly: true, statistics: true },

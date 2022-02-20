@@ -551,12 +551,12 @@
           }
           let params = { materialId: this.model.id }
           //编辑商品的时候多属性字段可以修改
-          this.meTable.columns[2].readonly = false
+          // this.meTable.columns[2].readonly = false
           this.requestMeTableData(this.url.materialsExtendList, params, this.meTable)
           // this.requestDepotTableData(this.url.depotWithStock, { mId: this.model.id }, this.depotTable)
         } else {
           this.switchDisabled = false
-          this.meTable.columns[2].readonly = true
+          // this.meTable.columns[2].readonly = true
           // this.requestDepotTableData(this.url.depotWithStock, { mId: 0 }, this.depotTable)
         }
       },
@@ -577,14 +577,14 @@
         })
       },
       /** 查询仓库tab的数据 */
-      requestDepotTableData(url, params, tab) {
-        tab.loading = true
-        getAction(url, params).then(res => {
-          tab.dataSource = res.data || []
-        }).finally(() => {
-          tab.loading = false
-        })
-      },
+      // requestDepotTableData(url, params, tab) {
+      //   tab.loading = true
+      //   getAction(url, params).then(res => {
+      //     tab.dataSource = res.data || []
+      //   }).finally(() => {
+      //     tab.loading = false
+      //   })
+      // },
       close () {
         this.$emit('close');
         this.visible = false
