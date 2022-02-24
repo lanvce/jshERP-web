@@ -18,6 +18,9 @@
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="编号">
           <a-input placeholder="请输入编号" v-decorator="['serialNo', validatorRules.serialNo ]"/>
         </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="利润点">
+          <a-input placeholder="请输入利润点" v-decorator="['profitRate', validatorRules.profitRate ]"/>
+        </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上级目录">
           <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
                          allow-clear treeDefaultExpandAll="true"
@@ -73,7 +76,10 @@
               { validator: this.validateName}
             ]
           },
-          serialNo: {rules: [{required: true, message: '请输入编号!'}]}
+          serialNo: {rules: [{required: true, message: '请输入编号!'}]},
+          profitRate:{rules: [
+            {required: true,message:'请输入利润点'}, { validator: this.validateProfitRate}
+            ]}
         },
         url: {
           add: "/materialCategory/add",
@@ -157,7 +163,13 @@
             callback(res.data);
           }
         });
+      },
+      validateProfitRate(rule,value,callback){
+        if (value<3){
+          callback("请输入大于3的数字")
+        }
       }
+
     }
   }
 </script>

@@ -158,9 +158,7 @@
           {title: '条码', dataIndex: 'mBarCode', width: '8%'},
           {title: '名称', dataIndex: 'name', width: '10%', ellipsis:true},
           {title: '品牌', dataIndex: 'brand', width: '6%', ellipsis:true},
-          {title: '规格', dataIndex: 'standard', width: '7%', ellipsis:true},
-          {title: '型号', dataIndex: 'model', width: '8%', ellipsis:true},
-          {title: '颜色', dataIndex: 'color', width: '4%', ellipsis:true},
+          {title: '型号', dataIndex: 'model', width: '10%', ellipsis:true},
           {title: '类别', dataIndex: 'categoryName', width: '6%', ellipsis:true},
           {title: '单位', dataIndex: 'unit', width: '6%', ellipsis:true,
             customRender:function (t,r,index) {
@@ -174,10 +172,14 @@
               }
             }
           },
-          {title: '保质期', dataIndex: 'expiryNum', width: '6%'},
-       //   {title: '库存', dataIndex: 'stock', width: '5%'},
+
+          {title: '规格', dataIndex: 'standard', width: '35%', ellipsis:true},
+
+          //   {title: '库存', dataIndex: 'stock', width: '5%'},
        //    {title: '供应商', dataIndex: 'supply', width: '5%'},
-          {title: '其他', dataIndex: 'materialOther', width: '10%', ellipsis:true},
+          {title: '颜色', dataIndex: 'color', width: '3%', ellipsis:true},
+          {title: '保质期', dataIndex: 'expiryNum', width: '3%'},
+          {title: '其他', dataIndex: 'materialOther', width: '6%', ellipsis:true},
           // {title: '成本', dataIndex: 'costDecimal', width: '5%'},
           // {title: '集采价', dataIndex: 'purchaseDecimal', width: '5%'},
           // {title: '批发价', dataIndex: 'dropshippingDecimal', width: '5%'},

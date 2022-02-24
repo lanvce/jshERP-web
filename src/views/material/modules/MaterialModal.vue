@@ -239,7 +239,7 @@
 <!--                  <a-button @click="batchSetPrice('cost')">成本-批量</a-button>-->
                   <a-button @click="batchSetPrice('purchase')">集采价-批量</a-button>
                   <a-button style="margin-left: 8px" @click="batchSetPrice('dropshipping')">代发价-批量</a-button>
-<!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">零售价-批量</a-button>-->
+                  <a-button style="margin-left: 8px" @click="batchSetPrice('commodity')">市场零售价-批量</a-button>
 <!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('wholesale')">销售价-批量</a-button>-->
 <!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>-->
                 </template>
@@ -377,6 +377,7 @@
         barCodeSwitch: false, //生成条码开关
         maxBarCodeInfo: '', //最大条码
         prefixNo: 'material',
+        selectedCategoryId:'',//当前选择的目录Id
         sku: {
           manyColor: '多颜色',
           manySize: '多尺寸',
@@ -418,7 +419,7 @@
                 { handler: this.validateBarCode}]
             },
             {
-              title: '供应商', key: 'supplierId', width: '10%', type: FormTypes.select, defaultValue: '',  placeholder: '请选择${title}',
+              title: '供应商', key: 'supplierId', width: '20%', type: FormTypes.select, defaultValue: '',  placeholder: '请选择${title}',
               options:[], allowSearch:false,
             },
             {
@@ -440,9 +441,9 @@
             //   title: '成本', key: 'costDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             // },
 
-            // {
-            //   title: '零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            // }
+            {
+              title: '市场零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            }
             // {
             //   title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             // },
@@ -499,7 +500,7 @@
       }
     },
     created () {
-      this.maxBarCodeAction();
+      // this.maxBarCodeAction();
       this.loadTreeData();
       this.loadUnitListData();
       this.loadParseMaterialProperty();
@@ -612,6 +613,8 @@
         this.validateFields()
       },
       handleCancel () {
+        this.selectedCategoryId=''
+        this.maxBarCodeInfo=''
         this.close()
       },
       /** 触发表单验证 */
@@ -778,13 +781,13 @@
           }
         });
       },
-      maxBarCodeAction(){
-        getMaxBarCode({}).then((res)=> {
-          if (res && res.code === 200) {
-            this.maxBarCodeInfo = res.data.barCode - 0
-          }
-        })
-      },
+      // maxBarCodeAction(){
+      //   getMaxBarCode({}).then((res)=> {
+      //     if (res && res.code === 200) {
+      //       this.maxBarCodeInfo = res.data.barCode - 0
+      //     }
+      //   })
+      // },
       loadTreeData(){
         let that = this;
         let params = {};
@@ -884,13 +887,46 @@
         return num
       },
       onAdded(event) {
-        const { row, target } = event
-        let unit = ''
-        if(this.unitStatus == false) {
-          unit = this.form.getFieldValue('unit')
+        let oldSelectedCategoryId=this.selectedCategoryId;
+        console.log("old"+oldSelectedCategoryId)
+        //获取到选中的商品类别Id
+        let categoryId=this.form.getFieldValue('categoryId');
+        this.selectedCategoryId=categoryId;
+        console.log("new"+this.selectedCategoryId)
+
+        if (typeof(categoryId)=="undefined"){
+          this.$message.error('请先选择类别，会自动生成条码');
         }
-        this.maxBarCodeInfo = this.maxBarCodeInfo + 1
-        target.setValues([{rowKey: row.id, values: {barCode: this.maxBarCodeInfo, commodityUnit: unit?unit:''}}])
+        else {
+          const { row, target } = event
+          let unit = ''
+          if (this.unitStatus == false) {
+            unit = this.form.getFieldValue('unit')
+          }
+          //根据类别获取对应的条码
+          let params={
+            categoryId:categoryId,
+          }
+
+          console.log("外面code为："+this.maxBarCodeInfo)
+
+          if (this.maxBarCodeInfo==''||this.selectedCategoryId!=oldSelectedCategoryId) {
+            getMaxBarCode(params).then((res) => {
+              if (res && res.code === 200) {
+                this.maxBarCodeInfo = res.data.barCode - 0
+                console.log("code为："+this.maxBarCodeInfo)
+                target.setValues([{
+                  rowKey: row.id,
+                  values: { barCode: this.maxBarCodeInfo+=1, commodityUnit: unit ? unit : '', dropshippingDecimal: '' }
+                }]);
+              }
+            })
+          }
+            target.setValues([{
+            rowKey: row.id,
+            values: { barCode: this.maxBarCodeInfo+=1, commodityUnit: unit ? unit : '', dropshippingDecimal: '' }
+          }]);
+        }
       },
       //单元值改变一个字符就触发一次
       // onValueChange(event) {
@@ -980,7 +1016,6 @@
             let meInfo = {barCode: arr[i].barCode, commodityUnit: arr[i].commodityUnit, sku: arr[i].sku,
               purchaseDecimal: arr[i].purchaseDecimal,
               dropshippingDecimal:arr[i].dropshippingDecimal,
-              costDecimal:arr[i].costDecimal,
               commodityDecimal: arr[i].commodityDecimal,
               wholesaleDecimal: arr[i].wholesaleDecimal,
               lowDecimal: arr[i].lowDecimal}
@@ -994,8 +1029,6 @@
               meInfo.lowDecimal = price-0
             } else if(batchType === 'dropshipping') {
               meInfo.dropshippingDecimal = price-0
-            } else if(batchType === 'cost') {
-              meInfo.costDecimal = price-0
             }
             if(arr[i].id) {
               meInfo.id = arr[i].id

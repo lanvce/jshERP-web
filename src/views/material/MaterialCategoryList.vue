@@ -64,9 +64,12 @@
           <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="名称">
             <a-input placeholder="请输入名称" v-decorator="['name', validatorRules.name ]"/>
           </a-form-item>
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="编号">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="编号" >
             <a-input placeholder="请输入编号" v-decorator="['serialNo', validatorRules.serialNo ]"/>
           </a-form-item>
+<!--          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="利润点">-->
+<!--            <a-input placeholder="请输入利润点" v-decorator="['profitRate', validatorRules.profitRate ]"/>-->
+<!--          </a-form-item>-->
           <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上级目录">
             <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
                            allow-clear treeDefaultExpandAll="true"
@@ -149,7 +152,10 @@ export default {
             { validator: this.validateName}
           ]
         },
-        serialNo: {rules: [{required: true, message: '请输入编号!'}]}
+        serialNo: {rules: [{required: true, message: '请输入编号!'}]},
+        profitRate:{rules: [
+            {required: true,message:'请输入利润点'}, { validator: this.validateProfitRate}
+          ]}
       },
       url: {
         delete: '/materialCategory/delete',
@@ -292,6 +298,7 @@ export default {
             record.parentId = res.data.parentId;
             record.sort = res.data.sort;
             record.remark = res.data.remark;
+            record.profitRate=res.data.profitRate;
             console.log('onSelect-record', record)
             this.currSelected = Object.assign({}, record)
             this.model = this.currSelected
@@ -305,7 +312,7 @@ export default {
     // 触发onSelect事件时,为类别树右侧的form表单赋值
     setValuesToForm(record) {
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(record, 'name','serialNo', 'parentId', 'sort', 'remark'))
+        this.form.setFieldsValue(pick(record, 'name','serialNo', 'parentId', 'sort', 'remark','profitRate'))
       })
     },
     getCurrSelectedTitle() {
@@ -377,6 +384,11 @@ export default {
           callback(res.data);
         }
       });
+    },
+    validateProfitRate(rule,value,callback){
+      if (value<3){
+        callback("请输入大于3的数字")
+      }
     },
     handleAdd() {
       this.$refs.materialCategoryModal.add()
