@@ -177,6 +177,7 @@
                         @change="(e)=>handleChangeCheckboxCommon(e,row,col)"
                       />
                     </template>
+
                     <!-- select -->
                     <template v-else-if="col.type === formTypes.select">
                       <a-tooltip

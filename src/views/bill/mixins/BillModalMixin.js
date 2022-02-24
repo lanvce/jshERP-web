@@ -357,7 +357,6 @@ export const BillModalMixin = {
                   for (let i = 0; i < mList.length; i++) {
                     let mInfo = mList[i]
                     this.changeColumnShow(mInfo)
-                    this.setSupplier(mInfo)
                     let mObj = this.parseInfoToObj(mInfo)
                     mObj.depotId = mInfo.depotId
                     mObj.stock = mInfo.stock
@@ -383,7 +382,6 @@ export const BillModalMixin = {
                   if (res && res.code === 200) {
                     let mArr = []
                     let mInfo = mList[0]
-                    this.setSupplier(mInfo)
                     this.changeColumnShow(mInfo)
                     let mInfoEx = this.parseInfoToObj(mInfo)
                     mInfoEx.stock = res.data.stock
@@ -527,7 +525,7 @@ export const BillModalMixin = {
         taxMoney: 0,
         taxLastMoney: mInfo.billPrice,
         dropshippingDecimal:mInfo.dropshippingDecimal,
-        supplier:mInfo.supplier,
+        supplierName:mInfo.supplierName,
         supplierId:mInfo.supplierId
       }
     },

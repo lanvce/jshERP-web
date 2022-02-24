@@ -16,13 +16,13 @@
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
-                <a-form-item label="条码" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="请输入条码查询" v-model="queryParam.barCode"></a-input>
+                <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                  <a-input placeholder="请输入名称查询" v-model="queryParam.name"></a-input>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
-                <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="请输入名称查询" v-model="queryParam.name"></a-input>
+                <a-form-item label="型号" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                  <a-input placeholder="请输入型号查询" v-model="queryParam.model"></a-input>
                 </a-form-item>
               </a-col>
               <template v-if="toggleSearchStatus">
@@ -31,9 +31,10 @@
                     <a-input placeholder="请输入规格查询" v-model="queryParam.standard"></a-input>
                   </a-form-item>
                 </a-col>
+
                 <a-col :md="6" :sm="24">
-                  <a-form-item label="型号" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                    <a-input placeholder="请输入型号查询" v-model="queryParam.model"></a-input>
+                  <a-form-item label="条码" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                    <a-input placeholder="请输入条码查询" v-model="queryParam.barCode"></a-input>
                   </a-form-item>
                 </a-col>
               </template>

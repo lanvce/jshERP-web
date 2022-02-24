@@ -31,7 +31,7 @@
               </a-col>
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="品牌" data-step="1" data-title="品牌"
-                             data-intro="品牌">
+                             data-intro="品牌" >
                   <a-input placeholder="请输入品牌" v-decorator.trim="[ 'brand']"/>
                 </a-form-item>
               </a-col>
@@ -53,8 +53,9 @@
                              data-step="4" data-title="单位" data-intro="此处支持单个单位和多单位，勾选多单位就可以切换到多单位的下拉框，多单位需要先在【计量单位】页面进行录入。
                   比如牛奶有瓶和箱两种单位，12瓶=1箱，这就构成了多单位，多单位中有个换算比例">
                   <a-row class="form-row" :gutter="24">
+
                     <a-col :lg="15" :md="15" :sm="24">
-                      <a-input placeholder="输入单位" :hidden="unitStatus" v-decorator.trim="[ 'unit' ]"
+                      <a-input placeholder="输入单位" :hidden="unitStatus" v-decorator.trim="[ 'unit' ,validatorRules.unit]"
                                @change="onlyUnitOnChange"/>
                       <a-select :value="unitList" placeholder="选择单位" v-decorator="[ 'unitId' ]"
                                 @change="manyUnitOnChange"
@@ -75,6 +76,7 @@
                         </a-select-option>
                       </a-select>
                     </a-col>
+
                     <a-col :lg="9" :md="9" :sm="24">
                       <a-checkbox :checked="unitChecked" @change="unitOnChange">多单位</a-checkbox>
                     </a-col>
@@ -103,7 +105,7 @@
                              :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="类别"
                              data-step="7" data-title="类别" data-intro="类别需要在【商品类别】页面进行录入，录入之后在此处进行调用">
                   <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}" allow-clear
-                                 :treeData="categoryTree" v-decorator="[ 'categoryId' ]" placeholder="请选择类别">
+                                 :treeData="categoryTree" v-decorator="[ 'categoryId',validatorRules.category ]" placeholder="请选择类别">
                   </a-tree-select>
                 </a-form-item>
               </a-col>
@@ -160,6 +162,7 @@
                 </a-form-item>
               </a-col>
             </a-row>
+
             <a-card v-if="skuSwitch">
               <a-row class="form-row" :gutter="24">
                 <a-col :md="6" :sm="24">
@@ -216,6 +219,7 @@
                 </a-col>
               </a-row>
             </a-card>
+
             <div style="margin-top:8px;" id="materialDetailModal">
               <j-editable-table
                 ref="editableMeTable"
@@ -240,9 +244,12 @@
 <!--                  <a-button style="margin-left: 8px" @click="batchSetPrice('low')">最低售价-批量</a-button>-->
                 </template>
               </j-editable-table>
+
               <!-- 表单区域 -->
               <batch-set-price-modal ref="priceModalForm" @ok="batchSetPriceModalFormOk"></batch-set-price-modal>
             </div>
+
+
             <a-row class="form-row" :gutter="24">
               <a-col :lg="24" :md="24" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="{xs: { span: 24 },sm: { span: 24 }}" label="">
@@ -294,9 +301,9 @@
               :rowSelection="false"
               :actionButton="false">
               <template #buttonAfter>
-                <a-button style="margin: 0px 0px 8px 0px" @click="batchSetStock('initStock')">期初库存-批量</a-button>
-                <a-button style="margin-left: 8px" @click="batchSetStock('lowSafeStock')">最低安全库存-批量</a-button>
-                <a-button style="margin-left: 8px" @click="batchSetStock('highSafeStock')">最高安全库存-批量</a-button>
+<!--                <a-button style="margin: 0px 0px 8px 0px" @click="batchSetStock('initStock')">期初库存-批量</a-button>-->
+<!--                <a-button style="margin-left: 8px" @click="batchSetStock('lowSafeStock')">最低安全库存-批量</a-button>-->
+<!--                <a-button style="margin-left: 8px" @click="batchSetStock('highSafeStock')">最高安全库存-批量</a-button>-->
               </template>
             </j-editable-table>
             <!-- 表单区域 -->
@@ -476,6 +483,11 @@
             rules: [
               { required: true, message: '请输入单位!' }
             ]
+          },
+          category:{
+            rules: [
+              { required: true, message: '请选择类别!' }
+            ]
           }
         },
         url: {
@@ -503,7 +515,7 @@
       },
       add () {
         //隐藏多属性
-        this.meTable.columns[2].type = FormTypes.hidden
+        // this.meTable.columns[2].type = FormTypes.hidden
         // 默认新增一条数据
         this.getAllTable().then(editableTables => {
           editableTables[0].add()
@@ -644,10 +656,10 @@
           this.$message.warning('抱歉，请输入条码信息！');
           return;
         }
-        if(formData.enableSerialNumber === '1' && formData.enableBatchNumber === '1') {
-          this.$message.warning('抱歉，序列号和批号只能选择一项！');
-          return;
-        }
+        // if(formData.enableSerialNumber === '1' && formData.enableBatchNumber === '1') {
+        //   this.$message.warning('抱歉，序列号和批号只能选择一项！');
+        //   return;
+        // }
         //校验商品是否存在，通过校验商品的名称、型号、规格、颜色、单位、制造商等
         let param = {
           id: this.model.id?this.model.id:0,
@@ -881,70 +893,71 @@
         target.setValues([{rowKey: row.id, values: {barCode: this.maxBarCodeInfo, commodityUnit: unit?unit:''}}])
       },
       //单元值改变一个字符就触发一次
-      onValueChange(event) {
-        const { type, row, column, value, target } = event
-        switch(column.key) {
-          case "purchaseDecimal":
-          case "commodityDecimal":
-          case "wholesaleDecimal":
-          case "lowDecimal":
-            this.changeDecimalByValue(row)
-            break;
-        }
-      },
-      //修改商品明细中的价格触发计算
-      changeDecimalByValue(row) {
-        let unitArr = this.unitList
-        let basicUnit = '', otherUnit = '', ratio = 1, otherUnitTwo = '', ratioTwo = 1, otherUnitThree = '', ratioThree = 1
-        for (let i = 0; i < unitArr.length; i++) {
-          if(unitArr[i].id === this.form.getFieldValue('unitId')) {
-            basicUnit = unitArr[i].basicUnit
-            otherUnit = unitArr[i].otherUnit
-            ratio = unitArr[i].ratio
-            if(unitArr[i].otherUnitTwo) {
-              otherUnitTwo = unitArr[i].otherUnitTwo
-              ratioTwo = unitArr[i].ratioTwo
-            }
-            if(unitArr[i].otherUnitThree) {
-              otherUnitThree = unitArr[i].otherUnitThree
-              ratioThree = unitArr[i].ratioThree
-            }
-          }
-        }
-        if(row.commodityUnit === basicUnit) {
-          this.$refs.editableMeTable.getValues((error, values) => {
-            let mArr = values, basicPurchaseDecimal='', basicCommodityDecimal='', basicWholesaleDecimal='', basicLowDecimal=''
-            for (let i = 0; i < mArr.length; i++) {
-              let mInfo = mArr[i]
-              if(i===0) {
-                basicPurchaseDecimal = mInfo.purchaseDecimal
-                basicCommodityDecimal = mInfo.commodityDecimal
-                basicWholesaleDecimal = mInfo.wholesaleDecimal
-                basicLowDecimal = mInfo.lowDecimal
-              } else {
-                //副单位进行换算
-                if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratio}
-                if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratio}
-                if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratio}
-                if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratio}
-                if(otherUnitTwo && i===2) {
-                  if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratioTwo}
-                  if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratioTwo}
-                  if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratioTwo}
-                  if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratioTwo}
-                }
-                if(otherUnitThree && i===3) {
-                  if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratioThree}
-                  if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratioThree}
-                  if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratioThree}
-                  if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratioThree}
-                }
-              }
-            }
-            this.meTable.dataSource = mArr
-          })
-        }
-      },
+      // onValueChange(event) {
+      //   const { type, row, column, value, target } = event
+      //   switch(column.key) {
+      //     case "purchaseDecimal":
+      //     case "dropshippingDecimal":
+      //     case "commodityDecimal":
+      //     case "wholesaleDecimal":
+      //     case "lowDecimal":
+      //       this.changeDecimalByValue(row)
+      //       break;
+      //   }
+      // },
+      // //修改商品明细中的价格触发计算
+      // changeDecimalByValue(row) {
+      //   let unitArr = this.unitList
+      //   let basicUnit = '', otherUnit = '', ratio = 1, otherUnitTwo = '', ratioTwo = 1, otherUnitThree = '', ratioThree = 1
+      //   for (let i = 0; i < unitArr.length; i++) {
+      //     if(unitArr[i].id === this.form.getFieldValue('unitId')) {
+      //       basicUnit = unitArr[i].basicUnit
+      //       otherUnit = unitArr[i].otherUnit
+      //       ratio = unitArr[i].ratio
+      //       if(unitArr[i].otherUnitTwo) {
+      //         otherUnitTwo = unitArr[i].otherUnitTwo
+      //         ratioTwo = unitArr[i].ratioTwo
+      //       }
+      //       if(unitArr[i].otherUnitThree) {
+      //         otherUnitThree = unitArr[i].otherUnitThree
+      //         ratioThree = unitArr[i].ratioThree
+      //       }
+      //     }
+      //   }
+      //   if(row.commodityUnit === basicUnit) {
+      //     this.$refs.editableMeTable.getValues((error, values) => {
+      //       let mArr = values, basicPurchaseDecimal='', basicCommodityDecimal='', basicWholesaleDecimal='', basicLowDecimal=''
+      //       for (let i = 0; i < mArr.length; i++) {
+      //         let mInfo = mArr[i]
+      //         if(i===0) {
+      //           basicPurchaseDecimal = mInfo.purchaseDecimal
+      //           basicCommodityDecimal = mInfo.commodityDecimal
+      //           basicWholesaleDecimal = mInfo.wholesaleDecimal
+      //           basicLowDecimal = mInfo.lowDecimal
+      //         } else {
+      //           //副单位进行换算
+      //           if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratio}
+      //           if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratio}
+      //           if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratio}
+      //           if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratio}
+      //           if(otherUnitTwo && i===2) {
+      //             if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratioTwo}
+      //             if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratioTwo}
+      //             if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratioTwo}
+      //             if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratioTwo}
+      //           }
+      //           if(otherUnitThree && i===3) {
+      //             if(basicPurchaseDecimal) { mInfo.purchaseDecimal = basicPurchaseDecimal*ratioThree}
+      //             if(basicCommodityDecimal) { mInfo.commodityDecimal = basicCommodityDecimal*ratioThree}
+      //             if(basicWholesaleDecimal) { mInfo.wholesaleDecimal = basicWholesaleDecimal*ratioThree}
+      //             if(basicLowDecimal) { mInfo.lowDecimal = basicLowDecimal*ratioThree}
+      //           }
+      //         }
+      //       }
+      //       this.meTable.dataSource = mArr
+      //     })
+      //   }
+      // },
       batchSetPrice(type) {
         if(this.skuSwitch || this.model.id){
           this.$refs.priceModalForm.add(type);

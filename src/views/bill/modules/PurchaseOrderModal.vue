@@ -208,7 +208,7 @@
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
            // { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
-            { title: '供应商', key: 'supplier', width: '5%', type: FormTypes.normal },
+            { title: '供应商', key: 'supplierName', width: '5%', type: FormTypes.normal },
             { title: '', key: 'supplierId', width: '0%', type: FormTypes.normal},
             { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
             { title: '多属性', key: 'sku', width: '4%', type: FormTypes.normal },
