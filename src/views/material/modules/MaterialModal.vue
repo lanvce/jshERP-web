@@ -541,7 +541,7 @@
           }, 5)
         }
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'name', 'brand','standard', 'unit', 'unitId', 'model', 'color',
+          this.form.setFieldsValue(pick(this.model, 'name', 'brand','standard', 'unit', 'unitId', 'model', 'color','links',
             'categoryId','enableSerialNumber','enableBatchNumber','expiryNum','weight','remark','mfrs','otherField1','otherField2','otherField3'))
           autoJumpNextInput('materialHeadModal')
           autoJumpNextInput('materialDetailModal')
