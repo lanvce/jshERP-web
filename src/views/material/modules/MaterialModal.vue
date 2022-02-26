@@ -84,6 +84,16 @@
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
+                <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}"
+                             :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="类别"
+                             data-step="7" data-title="类别" data-intro="类别需要在【商品类别】页面进行录入，录入之后在此处进行调用">
+                  <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}" allow-clear
+                                 :treeData="categoryTree" v-decorator="[ 'categoryId',validatorRules.category ]" placeholder="请选择类别">
+                  </a-tree-select>
+                </a-form-item>
+              </a-col>
+
+              <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="颜色">
                   <a-input placeholder="请输入颜色" v-decorator.trim="[ 'color' ]"/>
                 </a-form-item>
@@ -100,15 +110,7 @@
 <!--                  <a-input-number style="width: 100%" placeholder="请输入保质期(天)" v-decorator.trim="[ 'expiryNum' ]"/>-->
 <!--                </a-form-item>-->
 <!--              </a-col>-->
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}"
-                             :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="类别"
-                             data-step="7" data-title="类别" data-intro="类别需要在【商品类别】页面进行录入，录入之后在此处进行调用">
-                  <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}" allow-clear
-                                 :treeData="categoryTree" v-decorator="[ 'categoryId',validatorRules.category ]" placeholder="请选择类别">
-                  </a-tree-select>
-                </a-form-item>
-              </a-col>
+
 <!--              <a-col :md="6" :sm="24">-->
 <!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="序列号" data-step="8" data-title="序列号"-->
 <!--                             data-intro="此处是商品的序列号开关，如果选择了有，则在采购入库单据需要录入该商品的序列号，在销售出库单据需要选择该商品的序列号进行出库">-->
@@ -154,13 +156,13 @@
                   <a-input placeholder="输入链接 多条英文逗号分割 " v-decorator.trim="[ 'links' ]"/>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="多属性" data-step="12" data-title="多属性"
-                             data-intro="多属性是针对的sku商品（比如服装、鞋帽行业），此处开关如果启用就可以在下方进行多sku的配置，配置具体的颜色、尺码之类的组合">
-                  <a-switch checked-children="启用" un-checked-children="关闭" v-model="skuSwitch"
-                            :disabled="switchDisabled" @change="onSkuChange"></a-switch>
-                </a-form-item>
-              </a-col>
+<!--              <a-col :md="6" :sm="24">-->
+<!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="多属性" data-step="12" data-title="多属性"-->
+<!--                             data-intro="多属性是针对的sku商品（比如服装、鞋帽行业），此处开关如果启用就可以在下方进行多sku的配置，配置具体的颜色、尺码之类的组合">-->
+<!--                  <a-switch checked-children="启用" un-checked-children="关闭" v-model="skuSwitch"-->
+<!--                            :disabled="switchDisabled" @change="onSkuChange"></a-switch>-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
             </a-row>
 
             <a-card v-if="skuSwitch">
@@ -253,7 +255,27 @@
             <a-row class="form-row" :gutter="24">
               <a-col :lg="24" :md="24" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="{xs: { span: 24 },sm: { span: 24 }}" label="">
-                  <a-textarea :rows="1" placeholder="请输入备注" v-decorator="[ 'remark' ]" style="margin-top:8px;"/>
+<!--                  <a-textarea :rows="1" placeholder="请输入备注" v-decorator="[ 'remark' ]" style="margin-top:8px;"/>-->
+
+                  <a-select placeholder="选择备注信息" :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children">-->
+<!--                                        <div slot="dropdownRender" slot-scope="menu">-->
+<!--                                          <v-nodes :vnodes="menu" />-->
+<!--                                          <a-divider style="margin: 4px 0;" />-->
+
+<!--                                          <div  style="padding: 4px 8px; cursor: pointer;"-->
+<!--                                               @mousedown="e => e.preventDefault()" @click="addSupplier"><a-icon type="plus" /> 新增备注</div>-->
+<!--                                        </div>-->
+
+                                        <a-select-option value="此代发价为含专票含运价格（偏远地区运费另算）">
+                                          此代发价为含专票含运价格（偏远地区运费另算）
+                                        </a-select-option>
+                                        <a-select-option value="此代发价为含普票含运价格（偏远地区运费另算）">
+                                          此代发价为含普票含运价格（偏远地区运费另算）
+                                        </a-select-option>
+                                        <a-select-option value="此代发价为不含税价格（偏远地区运费另算）">
+                                          此代发价为不含税价格（偏远地区运费另算）
+                                        </a-select-option>
+                                      </a-select>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -412,11 +434,11 @@
           dataSource: [],
           columns: [
             {
-              title: '条码', key: 'barCode', width: '15%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}',
-              validateRules: [{ required: true, message: '${title}不能为空' },
-                { pattern: /^[1-9]\d*$/, message: '请输入零以上的正整数' },
-                { pattern: /^\d{4,13}$/, message: '4到13位数字' },
-                { handler: this.validateBarCode}]
+              title: '条码', key: 'barCode', width: '15%', type: FormTypes.normal, defaultValue: '', placeholder: '请输入${title}',
+              // validateRules: [{ required: true, message: '${title}不能为空' },
+              //   { pattern: /^[1-9]\d*$/, message: '请输入零以上的正整数' },
+              //   { pattern: /^\d{4,13}$/, message: '4到13位数字' },
+              //   { handler: this.validateBarCode}]
             },
             {
               title: '供应商', key: 'supplierId', width: '20%', type: FormTypes.select, defaultValue: '',  placeholder: '请选择${title}',
@@ -907,8 +929,6 @@
           let params={
             categoryId:categoryId,
           }
-
-          console.log("外面code为："+this.maxBarCodeInfo)
 
           if (this.maxBarCodeInfo==''||this.selectedCategoryId!=oldSelectedCategoryId) {
             getMaxBarCode(params).then((res) => {

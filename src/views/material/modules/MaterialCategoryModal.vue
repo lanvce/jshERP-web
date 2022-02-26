@@ -112,7 +112,7 @@
         this.visible = true;
         this.loadTreeData();
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(record, 'name','serialNo', 'parentId', 'sort', 'remark'))
+          this.form.setFieldsValue(pick(record, 'name','serialNo', 'parentId', 'sort', 'remark','profitRate'))
         });
       },
       close () {
