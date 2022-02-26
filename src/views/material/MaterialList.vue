@@ -57,7 +57,7 @@
           <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
             <a-popover title="表格模板">
               <template slot="content">
-                <p><a target="_blank" href="/doc/goods_template.xls"><b>商品Excel模板下载</b></a></p>
+                <p><a target="_blank" href="/doc/goods_template.xlsx"><b>商品Excel模板下载</b></a></p>
               </template>
               <a-button type="primary" icon="import">导入</a-button>
             </a-popover>
@@ -178,7 +178,7 @@
           //   {title: '库存', dataIndex: 'stock', width: '5%'},
        //    {title: '供应商', dataIndex: 'supply', width: '5%'},
           {title: '颜色', dataIndex: 'color', width: '3%', ellipsis:true},
-          {title: '保质期', dataIndex: 'expiryNum', width: '3%'},
+          // {title: '保质期', dataIndex: 'expiryNum', width: '3%'},
           {title: '其他', dataIndex: 'materialOther', width: '6%', ellipsis:true},
           // {title: '成本', dataIndex: 'costDecimal', width: '5%'},
           // {title: '集采价', dataIndex: 'purchaseDecimal', width: '5%'},
