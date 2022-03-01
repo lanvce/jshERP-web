@@ -102,6 +102,7 @@
         categoryTree:[],
         columns: [
           {dataIndex: 'mBarCode', title: '条码', width: 100, align: 'left'},
+          {dataIndex: 'brand', title: '品牌', width: 80},
           {dataIndex: 'name', title: '名称', width: 120, ellipsis:true},
           {dataIndex: 'categoryName', title: '类别', width: 80},
           {dataIndex: 'standard', title: '规格', width: 80},
@@ -115,7 +116,7 @@
           {dataIndex: 'supplierName', title: '供应商名', width: 80, ellipsis:true},
           {dataIndex: 'purchaseDecimal', title: '集采价', width: 80, ellipsis:true},
           {dataIndex: 'dropshippingDecimal', title: '代发价', width: 80, ellipsis:true},
-
+          {dataIndex: 'commodityDecimal', title: '市场零售价', width: 80, ellipsis:true},
 
           // {dataIndex: 'enableSerialNumber', title: '序列号', width: 60, align: "center",
           //   scopedSlots: { customRender: 'customRenderEnableSerialNumber' }
