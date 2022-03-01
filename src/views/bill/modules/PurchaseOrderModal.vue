@@ -197,7 +197,6 @@
           loading: false,
           dataSource: [],
           columns: [
-            // { title: '仓库名称', key: 'depotId', width: '7%', type: FormTypes.hidden },
             { title: '条码', key: 'barCode', width: '8%', type: FormTypes.popupJsh, kind: 'material', multi: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
@@ -207,7 +206,6 @@
             { title: '型号', key: 'model', width: '5%', type: FormTypes.normal },
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
-           // { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
             { title: '供应商', key: 'supplierName', width: '5%', type: FormTypes.normal },
             { title: '', key: 'supplierId', width: '0%', type: FormTypes.normal},
             { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
@@ -218,10 +216,10 @@
             { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,
               options: [{"text":"集采","value":"batchPurchase","selected":true},{"text":"代发","value":"dropshipping"}] },
             { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber ,readonly: true},
-            { title: '金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true },
+            { title: '金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true,readonly: true },
             { title: '税率', key: 'taxRate', width: '3%', type: FormTypes.inputNumber,placeholder: '%'},
             { title: '税额', key: 'taxMoney', width: '5%', type: FormTypes.inputNumber, readonly: true, statistics: true },
-            { title: '价税合计', key: 'taxLastMoney', width: '5%', type: FormTypes.inputNumber, statistics: true },
+            { title: '价税合计', key: 'taxLastMoney', width: '5%', type: FormTypes.inputNumber, statistics: true ,readonly: true},
             { title: '备注', key: 'remark', width: '5%', type: FormTypes.input}
           ]
         },
@@ -250,7 +248,7 @@
     methods: {
       //调用完edit()方法之后会自动调用此方法
       editAfter() {
-        this.changeColumnHide()
+        // this.changeColumnHide()
         if (this.action === 'add') {
           this.addInit(this.prefixNo)
           this.fileList = []
