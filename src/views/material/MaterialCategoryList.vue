@@ -388,9 +388,8 @@ export default {
     validateProfitRate(rule,value,callback){
       if (value<3){
         callback("请输入大于3的数字")
-      }else {
-        callback("")
       }
+      callback()
     },
     handleAdd() {
       this.$refs.materialCategoryModal.add()
