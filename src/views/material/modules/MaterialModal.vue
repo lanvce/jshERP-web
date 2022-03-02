@@ -266,13 +266,13 @@
 <!--                                               @mousedown="e => e.preventDefault()" @click="addSupplier"><a-icon type="plus" /> 新增备注</div>-->
 <!--                                        </div>-->
 
-                                        <a-select-option value="此代发价为含专票含运价格（偏远地区运费另算）">
+                                        <a-select-option value="此代发价为含专票含运价格，集采默认不含运（偏远地区运费另算）">
                                           此代发价为含专票含运价格（偏远地区运费另算）
                                         </a-select-option>
-                                        <a-select-option value="此代发价为含普票含运价格（偏远地区运费另算）">
+                                        <a-select-option value="此代发价为含普票含运价格，集采默认不含运（偏远地区运费另算）">
                                           此代发价为含普票含运价格（偏远地区运费另算）
                                         </a-select-option>
-                                        <a-select-option value="此代发价为不含税价格（偏远地区运费另算）">
+                                        <a-select-option value="此代发价为不含税价格，集采默认不含运（偏远地区运费另算）">
                                           此代发价为不含税价格（偏远地区运费另算）
                                         </a-select-option>
                                       </a-select>
