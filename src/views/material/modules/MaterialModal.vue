@@ -24,29 +24,22 @@
           <a-tab-pane key="1" tab="基本信息" forceRender>
             <a-row class="form-row" :gutter="24" id="materialHeadModal">
               <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="名称" data-step="1" data-title="名称"
-                             data-intro="名称必填，可以重复">
-                  <a-input placeholder="请输入名称" v-decorator.trim="[ 'name', validatorRules.name]"/>
-                </a-form-item>
-              </a-col>
-              <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="品牌" data-step="1" data-title="品牌"
                              data-intro="品牌" >
                   <a-input placeholder="请输入品牌" v-decorator.trim="[ 'brand']"/>
                 </a-form-item>
               </a-col>
+
               <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="规格" data-step="2" data-title="规格"
-                             data-intro="规格不必填，比如：10克">
-                  <a-input placeholder="请输入规格" v-decorator.trim="[ 'standard' ]"/>
+                <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}"
+                             :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="类别"
+                             data-step="7" data-title="类别" data-intro="类别需要在【商品类别】页面进行录入，录入之后在此处进行调用">
+                  <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}" allow-clear
+                                 :treeData="categoryTree" v-decorator="[ 'categoryId',validatorRules.category ]" placeholder="请选择类别">
+                  </a-tree-select>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="型号" data-step="3" data-title="型号"
-                             data-intro="型号是比规格更小的属性，比如：RX-01">
-                  <a-input placeholder="请输入型号" v-decorator.trim="[ 'model' ]"/>
-                </a-form-item>
-              </a-col>
+
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}"
                              :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="单位"
@@ -83,21 +76,34 @@
                   </a-row>
                 </a-form-item>
               </a-col>
-              <a-col :md="6" :sm="24">
-                <a-form-item :labelCol="{xs: { span: 24 },sm: { span: 4 }}"
-                             :wrapperCol="{xs: { span: 24 },sm: { span: 20 }}" label="类别"
-                             data-step="7" data-title="类别" data-intro="类别需要在【商品类别】页面进行录入，录入之后在此处进行调用">
-                  <a-tree-select style="width:100%" :dropdownStyle="{maxHeight:'200px',overflow:'auto'}" allow-clear
-                                 :treeData="categoryTree" v-decorator="[ 'categoryId',validatorRules.category ]" placeholder="请选择类别">
-                  </a-tree-select>
-                </a-form-item>
-              </a-col>
 
               <a-col :md="6" :sm="24">
                 <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="颜色">
                   <a-input placeholder="请输入颜色" v-decorator.trim="[ 'color' ]"/>
                 </a-form-item>
               </a-col>
+
+              <a-col :md="6" :sm="24">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="名称" data-step="1" data-title="名称"
+                             data-intro="名称必填，可以重复">
+                  <a-input placeholder="请输入名称" v-decorator.trim="[ 'name', validatorRules.name]"/>
+                </a-form-item>
+              </a-col>
+
+              <a-col :md="6" :sm="24">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="型号" data-step="3" data-title="型号"
+                             data-intro="型号是比规格更小的属性，比如：RX-01">
+                  <a-input placeholder="请输入型号" v-decorator.trim="[ 'model' ]"/>
+                </a-form-item>
+              </a-col>
+
+              <a-col :md="6" :sm="24">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="规格" data-step="2" data-title="规格"
+                             data-intro="规格不必填，比如：10克">
+                  <a-input placeholder="请输入规格" v-decorator.trim="[ 'standard' ]"/>
+                </a-form-item>
+              </a-col>
+
 <!--              <a-col :md="6" :sm="24">-->
 <!--                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="基础重量" data-step="5" data-title="基础重量"-->
 <!--                             data-intro="请填写基本单位对应的重量，用于计算按重量分摊费用时单据中各行商品分摊的费用成本">-->
@@ -272,7 +278,7 @@
                                         <a-select-option value="此代发价为含普票含运价格，集采默认不含运（偏远地区运费另算）">
                                           此代发价为含普票含运价格（偏远地区运费另算）
                                         </a-select-option>
-                                        <a-select-option value="此代发价为不含税价格，集采默认不含运（偏远地区运费另算）">
+                                        <a-select-option value="此代发价为不含税价格，集采默认不含运（偏远地区运费另算）" >
                                           此代发价为不含税价格（偏远地区运费另算）
                                         </a-select-option>
                                       </a-select>
