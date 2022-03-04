@@ -16,6 +16,12 @@
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
+                <a-form-item label="品牌" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                  <a-input placeholder="请输入品牌查询" v-model="queryParam.brand"></a-input>
+                </a-form-item>
+              </a-col>
+
+              <a-col :md="6" :sm="24">
                 <a-form-item label="名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
                   <a-input placeholder="请输入名称查询" v-model="queryParam.name"></a-input>
                 </a-form-item>
@@ -31,7 +37,6 @@
                     <a-input placeholder="请输入规格查询" v-model="queryParam.standard"></a-input>
                   </a-form-item>
                 </a-col>
-
                 <a-col :md="6" :sm="24">
                   <a-form-item label="条码" :labelCol="labelCol" :wrapperCol="wrapperCol">
                     <a-input placeholder="请输入条码查询" v-model="queryParam.barCode"></a-input>
@@ -148,6 +153,7 @@
         queryParam: {
           categoryId:'',
           barCode:'',
+          brand:'',
           name:'',
           standard:'',
           model:'',

@@ -272,15 +272,18 @@
 <!--                                               @mousedown="e => e.preventDefault()" @click="addSupplier"><a-icon type="plus" /> 新增备注</div>-->
 <!--                                        </div>-->
 
-                                        <a-select-option value="此代发价为含专票含运价格，集采默认不含运（偏远地区运费另算）">
-                                          此代发价为含专票含运价格（偏远地区运费另算）
-                                        </a-select-option>
-                                        <a-select-option value="此代发价为含普票含运价格，集采默认不含运（偏远地区运费另算）">
-                                          此代发价为含普票含运价格（偏远地区运费另算）
-                                        </a-select-option>
-                                        <a-select-option value="此价格不含税运 " >
-                                          此价格不含税运
-                                        </a-select-option>
+<!--                                        <a-select-option value="此代发价为含专票含运价格，集采默认不含运（偏远地区运费另算）">-->
+<!--                                          此代发价为含专票含运价格（偏远地区运费另算）-->
+<!--                                        </a-select-option>-->
+<!--                                        <a-select-option value="此代发价为含普票含运价格，集采默认不含运（偏远地区运费另算）">-->
+<!--                                          此代发价为含普票含运价格（偏远地区运费另算）-->
+<!--                                        </a-select-option>-->
+<!--                                        <a-select-option value="此价格不含税运 " >-->
+<!--                                          此价格不含税运-->
+<!--                                        </a-select-option>-->
+                                                               <a-select-option value="运费说明:集采价格默认不含运，一件代发默认含运" >
+                                                                 运费说明:集采价格默认不含运，一件代发默认含运
+                                                              </a-select-option>
                                       </a-select>
                 </a-form-item>
               </a-col>
@@ -461,23 +464,23 @@
             {
               title: '代发价', key: 'dropshippingDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
             },
-            // {
-            //   title: '多属性', key: 'sku', width: '10%', type: FormTypes.input, defaultValue: '', readonly:true, placeholder: '点击生成条码赋值'
-            // },
-
-            // {
-            //   title: '成本', key: 'costDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            // },
-
             {
               title: '市场零售价', key: 'commodityDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
+            },
+
+            {
+              title: '专票税率', key: 'specialTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
+              options: [{text:"1%",value:"1%"},{text:"3%",value:"3%"},{text:"6%",value:"6%"},{text:"9%",value:"9%"},{text:"13%",value:"13%"}]
+            },
+            {
+              title: '普票税率', key: 'normalTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
+              options: [{text:"1%",value:"1%"},{text:"3%",value:"3%"},{text:"6%",value:"6%"},{text:"9%",value:"9%"},{text:"13%",value:"13%"}]
+
+            },
+            {
+              title: '不含税', key: 'noTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
+              options: [{text:"0%",value:"0%"}]
             }
-            // {
-            //   title: '销售价', key: 'wholesaleDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            // },
-            // {
-            //   title: '最低售价', key: 'lowDecimal', width: '9%', type: FormTypes.input, defaultValue: '', placeholder: '请输入${title}'
-            // }
           ]
         },
         //库存数量表格
