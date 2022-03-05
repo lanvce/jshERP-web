@@ -209,14 +209,16 @@
             { title: '供应商', key: 'supplierName', width: '5%', type: FormTypes.normal },
             { title: '', key: 'supplierId', width: '0%', type: FormTypes.normal},
             { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
-            { title: '多属性', key: 'sku', width: '4%', type: FormTypes.normal },
             { title: '数量', key: 'operNumber', width: '5%', type: FormTypes.inputNumber, statistics: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
             { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,
-              options: [{"text":"集采","value":"batchPurchase","selected":true},{"text":"代发","value":"dropshipping"}] },
+              options: [{"text":"集采","value":"batchPurchase"},{"text":"代发","value":"dropshipping"}] },
             { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber ,readonly: true},
-            { title: '金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true,readonly: true },
+            { title: '商品金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true,readonly: true },
+            { title: '税种类别', key: 'taxRateType', width: '8%', type: FormTypes.select,placeholder: '请选择',
+            options: [ {text:"增值税专用发票",value: 1}, {text:"增值税普通发票",value: 2},{text: "不含税",value: 3}]
+            },
             { title: '税率', key: 'taxRate', width: '3%', type: FormTypes.inputNumber,placeholder: '%'},
             { title: '税额', key: 'taxMoney', width: '5%', type: FormTypes.inputNumber, readonly: true, statistics: true },
             { title: '价税合计', key: 'taxLastMoney', width: '5%', type: FormTypes.inputNumber, statistics: true ,readonly: true},
@@ -279,6 +281,18 @@
         this.initSupplier()
         this.initCustomer()
       },
+      //获取到税种对应的编号
+      getTaxRateNo(name){
+        if (name=='增值税专用发票'){
+          return 1
+        }
+        else if (name=='增值税普通发票'){
+          return 2
+        }
+        else if (name=='不含税'){
+          return 3
+        }
+      },
       /** 整理成formData */
       classifyIntoFormData(allValues) {
         let totalPrice = 0
@@ -290,7 +304,18 @@
         for(let item of detailArr){
           item.depotId = '' //订单不需要仓库
           totalPrice += item.allPrice-0
+          //设置税率种类
+          let rateType=item.taxRateType
+          if (typeof rateType==undefined||rateType==null){
+            item.taxRateType=null
+          }
+          //如果为文字
+          if (typeof rateType=='string'){
+            item.taxRateType=this.getTaxRateNo(rateType)
+            console.log(item.taxRateType)
+          }
         }
+
         billMain.totalPrice = 0-totalPrice
         if(this.fileList && this.fileList.length > 0) {
           billMain.fileName = this.fileList

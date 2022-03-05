@@ -96,6 +96,7 @@ export const BillModalMixin = {
           tab.dataSource = res.data.rows
           for(let i=0; i<tab.dataSource.length; i++){
             let info = tab.dataSource[i]
+            tab.dataSource[i].taxRateType=this.getTaxRateType(info)
             this.changeColumnShow(info)
           }
           typeof success === 'function' ? success(res) : ''
@@ -103,6 +104,16 @@ export const BillModalMixin = {
       }).finally(() => {
         tab.loading = false
       })
+    },
+    getTaxRateType(info){
+      let taxRateType=info.taxRateType;
+      if (taxRateType==1){
+        return  '增值税专用发票'
+      }else if (taxRateType==2){
+        return '增值税普通发票'
+      }else if (taxRateType==3){
+        return '不含税'
+      }
     },
     //改变字段的状态，1-显示 0-隐藏
     changeFormTypes(columns, key, type) {
@@ -318,28 +329,28 @@ export const BillModalMixin = {
     },
     onAdded(event) {
       const { row, target } = event
-      getAction('/depot/findDepotByCurrentUser').then((res) => {
-        if (res.code === 200) {
-          let arr = res.data
-          for (let i = 0; i < arr.length; i++) {
-            if(arr[i].isDefault){
-              target.setValues([{rowKey: row.id, values: {depotId: arr[i].id+''}}])
-            }
-          }
-        }
-      })
+      // getAction('/depot/findDepotByCurrentUser').then((res) => {
+      //   if (res.code === 200) {
+      //     let arr = res.data
+      //     for (let i = 0; i < arr.length; i++) {
+      //       if(arr[i].isDefault){
+      //         target.setValues([{rowKey: row.id, values: {depotId: arr[i].id+''}}])
+      //       }
+      //     }
+      //   }
+      // })
     },
     //单元值改变一个字符就触发一次
     onValueChange(event) {
       let that = this
       const { type, row, column, value, target } = event
-      let param,snList,batchNumber,operNumber,unitPrice,allPrice,taxRate,taxMoney,taxLastMoney
+      let param,snList,batchNumber,operNumber,unitPrice,allPrice,taxRate,taxMoney,taxLastMoney,taxRateType
       switch(column.key) {
-        case "depotId":
-          if(row.barCode){
-            that.getStockByDepotBarCode(row, target)
-          }
-          break;
+        // case "depotId":
+        //   if(row.barCode){
+        //     that.getStockByDepotBarCode(row, target)
+        //   }
+        //   break;
         case "barCode":
           param = {
             barCode: value,
@@ -358,8 +369,8 @@ export const BillModalMixin = {
                     let mInfo = mList[i]
                     this.changeColumnShow(mInfo)
                     let mObj = this.parseInfoToObj(mInfo)
-                    mObj.depotId = mInfo.depotId
-                    mObj.stock = mInfo.stock
+                    // mObj.depotId = mInfo.depotId
+                    // mObj.stock = mInfo.stock
                     mArr.push(mObj)
                   }
                   let taxLastMoneyTotal = 0
@@ -384,7 +395,7 @@ export const BillModalMixin = {
                     let mInfo = mList[0]
                     this.changeColumnShow(mInfo)
                     let mInfoEx = this.parseInfoToObj(mInfo)
-                    mInfoEx.stock = res.data.stock
+                    // mInfoEx.stock = res.data.stock
                     mInfoEx.purchaseType = 'batchPurchase'
                     let mObj = {
                       rowKey: row.id,
@@ -480,7 +491,39 @@ export const BillModalMixin = {
           target.recalcAllStatisticsColumns()
           that.autoChangePrice(target)
           break;
-        case "taxLastMoney":
+      case "taxRateType":
+        param = {
+          barCode: row.barCode,
+          mpList: getMpListShort(Vue.ls.get('materialPropertyList')),  //扩展属性
+          prefixNo: this.prefixNo
+        }
+        //根据税种类型设置相应的税率
+        getMaterialByBarCode(param).then((res) => {
+          if (res && res.code === 200) {
+            let mList = res.data
+            let mInfo=mList[0]
+            let newRate=null
+            if (value==1){
+              newRate=mInfo.specialTaxRate==null?null:mInfo.specialTaxRate
+            }
+            else if (value==2){
+              newRate=mInfo.normalTaxRate==null?null:mInfo.normalTaxRate
+            }
+            else if (value==3){
+              newRate=mInfo.noTaxRate==null?null:mInfo.noTaxRate
+            }
+            taxRate=newRate
+
+            allPrice = row.allPrice-0
+            taxMoney =((taxRate*0.01)*allPrice).toFixed(2)-0
+            taxLastMoney = (allPrice + taxMoney).toFixed(2)-0
+            target.setValues([{ rowKey: row.id, values: { taxRate: taxRate ,taxMoney: taxMoney, taxLastMoney: taxLastMoney} }])
+            target.recalcAllStatisticsColumns()
+            that.autoChangePrice(target)
+          }
+        });
+        break;
+      case "taxLastMoney":
           operNumber = row.operNumber-0 //数量
           taxLastMoney = value-0
           taxRate = row.taxRate-0 //税率
@@ -492,19 +535,58 @@ export const BillModalMixin = {
           that.autoChangePrice(target)
           break;
         case 'purchaseType':
-          operNumber = row.operNumber-0 //数量
-          taxRate = row.taxRate-0 //税率
-          allPrice = (row.unitPrice*operNumber).toFixed(2)-0
-          taxMoney =((row.taxRate*0.01)*allPrice).toFixed(2)-0
-          taxLastMoney = (allPrice + taxMoney).toFixed(2)-0
-          target.setValues([{rowKey: row.id,
-            values: {
-              taxMoney: taxMoney,
-              allPrice: allPrice,
-              taxLastMoney: taxLastMoney
-          }}])
-          target.recalcAllStatisticsColumns()
-          that.autoChangePrice(target)
+          // operNumber = row.operNumber-0 //数量
+          // taxRate = row.taxRate-0 //税率
+          // allPrice = (row.unitPrice*operNumber).toFixed(2)-0
+          // taxMoney =((row.taxRate*0.01)*allPrice).toFixed(2)-0
+          // taxLastMoney = (allPrice + taxMoney).toFixed(2)-0
+          // target.setValues([{rowKey: row.id,
+          //   values: {
+          //     taxMoney: taxMoney,
+          //     allPrice: allPrice,
+          //     taxLastMoney: taxLastMoney
+          // }}])
+          // target.recalcAllStatisticsColumns()
+          // that.autoChangePrice(target)
+
+          param = {
+            barCode: row.barCode,
+            mpList: getMpListShort(Vue.ls.get('materialPropertyList')),  //扩展属性
+            prefixNo: this.prefixNo
+          }
+          //根据税种类型设置相应的税率
+          getMaterialByBarCode(param).then((res) => {
+            if (res && res.code === 200) {
+              let mList = res.data
+              let mInfo=mList[0]
+              let newUnitPrice=null
+              if (row.purchaseType=='dropshipping'){
+                newUnitPrice=mInfo.dropshippingDecimal==null?null:mInfo.dropshippingDecimal
+              }
+              else if (row.purchaseType='batchPurchase'){
+                newUnitPrice=mInfo.purchaseDecimal==null?null:mInfo.purchaseDecimal
+              }
+              if (newUnitPrice==0){
+                newUnitPrice=null
+              }
+              console.log("purchasetype："+row.purchaseType,"unitPrice:"+newUnitPrice)
+
+              operNumber = row.operNumber-0 //数量
+              taxRate = row.taxRate-0 //税率
+              allPrice = (newUnitPrice*operNumber).toFixed(2)-0
+              taxMoney =((row.taxRate*0.01)*allPrice).toFixed(2)-0
+              taxLastMoney = (allPrice + taxMoney).toFixed(2)-0
+              target.setValues([{rowKey: row.id,
+                values: {
+                  unitPrice: newUnitPrice,
+                  taxMoney: taxMoney,
+                  allPrice: allPrice,
+                  taxLastMoney: taxLastMoney
+              }}])
+              target.recalcAllStatisticsColumns()
+              that.autoChangePrice(target)
+            }
+          });
       }
     },
     //转为商品对象
@@ -526,7 +608,9 @@ export const BillModalMixin = {
         taxLastMoney: mInfo.billPrice,
         dropshippingDecimal:mInfo.dropshippingDecimal,
         supplierName:mInfo.supplierName,
-        supplierId:mInfo.supplierId
+        supplierId:mInfo.supplierId,
+        brand: mInfo.brand,
+        taxRateType: mInfo.taxRateType
       }
     },
     setSupplier(info){

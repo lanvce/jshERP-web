@@ -470,16 +470,16 @@
 
             {
               title: '专票税率', key: 'specialTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
-              options: [{text:"1%",value:"1%"},{text:"3%",value:"3%"},{text:"6%",value:"6%"},{text:"9%",value:"9%"},{text:"13%",value:"13%"}]
+              options: [{text:"1%",value:1},{text:"3%",value:3},{text:"6%",value:6},{text:"9%",value:9},{text:"13%",value:13}]
             },
             {
               title: '普票税率', key: 'normalTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
-              options: [{text:"1%",value:"1%"},{text:"3%",value:"3%"},{text:"6%",value:"6%"},{text:"9%",value:"9%"},{text:"13%",value:"13%"}]
+              options: [{text:"1%",value:1},{text:"3%",value:3},{text:"6%",value:6},{text:"9%",value:9},{text:"13%",value:13}]
 
             },
             {
               title: '不含税', key: 'noTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
-              options: [{text:"0%",value:"0%"}]
+              options: [{text:"0%",value:0}]
             }
           ]
         },
