@@ -197,7 +197,7 @@
           loading: false,
           dataSource: [],
           columns: [
-            { title: '条码', key: 'barCode', width: '8%', type: FormTypes.popupJsh, kind: 'material', multi: true,
+            { title: '产品编码', key: 'barCode', width: '8%', type: FormTypes.popupJsh, kind: 'material', multi: true,
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
             { title: '名称', key: 'name', width: '6%', type: FormTypes.normal },
