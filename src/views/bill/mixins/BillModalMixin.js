@@ -610,7 +610,8 @@ export const BillModalMixin = {
         supplierName:mInfo.supplierName,
         supplierId:mInfo.supplierId,
         brand: mInfo.brand,
-        taxRateType: mInfo.taxRateType
+        taxRateType: mInfo.taxRateType,
+        commodityDecimal: mInfo.commodityDecimal
       }
     },
     setSupplier(info){
