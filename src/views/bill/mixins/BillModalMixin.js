@@ -96,7 +96,8 @@ export const BillModalMixin = {
           tab.dataSource = res.data.rows
           for(let i=0; i<tab.dataSource.length; i++){
             let info = tab.dataSource[i]
-            tab.dataSource[i].taxRateType=this.getTaxRateType(info)
+            let taxRateType=this.getTaxRateType(info)
+            tab.dataSource[i].taxRateType=taxRateType
             this.changeColumnShow(info)
           }
           typeof success === 'function' ? success(res) : ''
@@ -105,16 +106,21 @@ export const BillModalMixin = {
         tab.loading = false
       })
     },
+
     getTaxRateType(info){
       let taxRateType=info.taxRateType;
-      if (taxRateType==1){
-        return  '增值税专用发票'
-      }else if (taxRateType==2){
-        return '增值税普通发票'
-      }else if (taxRateType==3){
-        return '不含税'
+      if (taxRateType!=null){
+        if (taxRateType==1){
+          return  '增值税专用发票'
+        }else if (taxRateType==2){
+          return '增值税普通发票'
+        }else if (taxRateType==3){
+          return '不含税'
+        }
       }
+
     },
+
     //改变字段的状态，1-显示 0-隐藏
     changeFormTypes(columns, key, type) {
       for(let i=0; i<columns.length; i++){
@@ -369,10 +375,19 @@ export const BillModalMixin = {
                     let mInfo = mList[i]
                     this.changeColumnShow(mInfo)
                     let mObj = this.parseInfoToObj(mInfo)
-                    // mObj.depotId = mInfo.depotId
-                    // mObj.stock = mInfo.stock
+
+                    mObj.taxRateType=this.getTaxTypeByRate(mObj)
+                    console.log("mobj type："+mObj.taxRateType)
+
+                    let taxRate=this.getTaxRateByType(mObj)
+                    let allPrice=mObj.allPrice
+                    mObj.taxRate=taxRate
+                    mObj.taxMoney =((taxRate*0.01)*allPrice).toFixed(2)-0
+                    mObj.taxLastMoney = (allPrice + mObj.taxMoney).toFixed(2)-0
+
                     mArr.push(mObj)
                   }
+
                   let taxLastMoneyTotal = 0
                   for (let j = 0; j < mArr.length; j++) {
                     taxLastMoneyTotal += mArr[j].taxLastMoney-0
@@ -389,25 +404,36 @@ export const BillModalMixin = {
                 })
               } else {
                 //单个条码
-                findStockByDepotAndBarCode({ depotId: row.depotId, barCode: row.barCode }).then((res) => {
-                  if (res && res.code === 200) {
-                    let mArr = []
-                    let mInfo = mList[0]
-                    this.changeColumnShow(mInfo)
-                    let mInfoEx = this.parseInfoToObj(mInfo)
-                    // mInfoEx.stock = res.data.stock
-                    mInfoEx.purchaseType = 'batchPurchase'
-                    let mObj = {
-                      rowKey: row.id,
-                      values: mInfoEx
-                    }
-                    mArr.push(mObj)
-                    target.setValues(mArr);
-                    target.recalcAllStatisticsColumns()
-                    that.autoChangePrice(target)
-                    target.autoSelectBySpecialKey('operNumber')
-                  }
-                })
+                // findStockByDepotAndBarCode({ depotId: row.depotId, barCode: row.barCode }).then((res) => {
+                //   if (res && res.code === 200) {
+                let mArr = []
+                let mInfo = mList[0]
+                this.changeColumnShow(mInfo)
+                let mInfoEx = this.parseInfoToObj(mInfo)
+
+                //设置报价类型相关
+                mInfoEx.purchaseType = this.getPurchaseType(mInfoEx)
+                mInfoEx.unitPrice=this.getUnitPriceByType(mInfoEx)
+
+                //设置税率相关内容
+                mInfoEx.taxRateType = this.getTaxTypeByRate(mInfoEx)
+                let taxRate = this.getTaxRateByType(mInfoEx)
+                let allPrice = mInfoEx.allPrice
+                mInfoEx.taxRate = taxRate
+                mInfoEx.taxMoney = ((taxRate * 0.01) * allPrice).toFixed(2) - 0
+                mInfoEx.taxLastMoney = (allPrice + mInfoEx.taxMoney).toFixed(2) - 0
+
+                let mObj = {
+                  rowKey: row.id,
+                  values: mInfoEx
+                }
+                mArr.push(mObj)
+                target.setValues(mArr);
+                target.recalcAllStatisticsColumns()
+                that.autoChangePrice(target)
+                target.autoSelectBySpecialKey('operNumber')
+              // }
+              //   )
               }
             }
           });
@@ -569,7 +595,6 @@ export const BillModalMixin = {
               if (newUnitPrice==0){
                 newUnitPrice=null
               }
-              console.log("purchasetype："+row.purchaseType,"unitPrice:"+newUnitPrice)
 
               operNumber = row.operNumber-0 //数量
               taxRate = row.taxRate-0 //税率
@@ -607,23 +632,79 @@ export const BillModalMixin = {
         taxMoney: 0,
         taxLastMoney: mInfo.billPrice,
         dropshippingDecimal:mInfo.dropshippingDecimal,
+        purchaseDecimal:mInfo.purchaseDecimal,
         supplierName:mInfo.supplierName,
         supplierId:mInfo.supplierId,
         brand: mInfo.brand,
+        purchaseType:mInfo.quoteType,
         taxRateType: mInfo.taxRateType,
-        commodityDecimal: mInfo.commodityDecimal
+        commodityDecimal: mInfo.commodityDecimal,
+         specialTaxRate : mInfo.specialTaxRate,
+         normalTaxRate : mInfo.normalTaxRate,
+         noTaxRate : mInfo.noTaxRate
       }
+
     },
     setSupplier(info){
       let list=this.supList;
       for (let i = 0; i < list.length; i++) {
         let sup=list[i];
-        console.log(JSON.stringify(sup));
         let supplierName=sup.supplier;
 
         if (info.supplierId==sup.id){
           info.supplier=supplierName;
         }
+      }
+    },
+
+    //获取报价类型
+    getPurchaseType(mInfoEx){
+      let dropShippingDecimal=mInfoEx.dropshippingDecimal
+      if (dropShippingDecimal!=0&&dropShippingDecimal!=null){
+        return 'dropshipping'
+      }else {
+        return  'batchPurchase'
+      }
+    },
+
+    getUnitPriceByType(info){
+      if (info.purchaseType='batchPurchase'){
+        console.log("pur:"+info.purchaseDecimal)
+        return info.purchaseDecimal
+      }else if (info.purchaseType='dropshipping') {
+        return info.dropshippingDecimal
+      }
+    },
+
+    //获取需要展示的税率
+    getTaxTypeByRate(info) {
+      let specialTaxRate = info.specialTaxRate
+      let normalTaxRate = info.normalTaxRate
+      let noTaxRate = info.noTaxRate
+
+      let defaultType = 1
+      if (specialTaxRate == null) {
+        if (normalTaxRate == null) {
+          if (noTaxRate != null) {
+            defaultType = 3
+          }
+        } else {
+          defaultType = 2
+        }
+      }
+      return defaultType
+    },
+
+    getTaxRateByType(info){
+      let type=info.taxRateType
+      if (type==1){
+        return info.specialTaxRate
+      }
+      else if (type==2){
+        return info.normalTaxRate
+      }
+      else if (type==3){
+        return info.noTaxRate
       }
     },
     //使得型号、颜色、扩展信息、sku等为隐藏

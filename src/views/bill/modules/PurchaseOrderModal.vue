@@ -214,7 +214,7 @@
               validateRules: [{ required: true, message: '${title}不能为空' }]
             },
             { title: '报价类型', key: 'purchaseType', width: '5%', type: FormTypes.select ,
-              options: [{"text":"集采","value":"batchPurchase"},{"text":"代发","value":"dropshipping"}] },
+              options: [{"text":"集采","value":"batchPurchase"},{"text":"代发","value":"dropshipping","selected":true}] },
             { title: '市场零售价', key: 'commodityDecimal', width: '4%', type: FormTypes.normal },
             { title: '单价', key: 'unitPrice', width: '5%', type: FormTypes.inputNumber ,readonly: true},
             { title: '商品金额', key: 'allPrice', width: '5%', type: FormTypes.inputNumber, statistics: true,readonly: true },
@@ -314,7 +314,6 @@
           //如果为文字
           if (typeof rateType=='string'){
             item.taxRateType=this.getTaxRateNo(rateType)
-            console.log(item.taxRateType)
           }
         }
 
