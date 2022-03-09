@@ -479,7 +479,7 @@
             },
             {
               title: '不含税', key: 'noTaxRate', width: '9%', type: FormTypes.select, defaultValue: null, placeholder: '请输入${title}',
-              options: [{text:"0%",value:'0'},{text:"0%",value:0}]
+              options: [{text:"0%",value:'0'}]
             }
           ]
         },
