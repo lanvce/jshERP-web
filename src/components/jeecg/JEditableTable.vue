@@ -929,7 +929,7 @@
         // 只有在行编辑被销毁时才主动清空GroupRequest的内存
         destroyCleanGroupRequest: false,
         //集采。代发
-        // oldPurchaseValue:[]
+        oldPurchaseValue:[]
       }
     },
     created() {
@@ -1225,16 +1225,14 @@
             dataId = this.caseId + dataId
           }
           let row = { id: dataId }
-
           //这里改
-          // if(!this.oldPurchaseValue.find(i=>i.id===row.id)&& data.barCode){
-          //   const value={}
-          //   value.id=row.id
-          //   value.dropshippingDecimal=data.dropshippingDecimal
-          //   value.eachPrice=data.unitPrice
-          //   this.oldPurchaseValue.push(value)
-          // }
-
+          if(!this.oldPurchaseValue.find(i=>i.id===row.id)&& data.barCode){
+            const value={}
+            value.id=row.id
+            value.dropshippingDecimal=data.dropshippingDecimal
+            value.eachPrice=data.unitPrice
+            this.oldPurchaseValue.push(value)
+          }
           let value = { id: dataId }
           let disabled = false
           this.columns.forEach(column => {
@@ -1763,11 +1761,11 @@
               this.inputValues.forEach(value => {
                 // 在inputValues中找到了该字段
                 if (rowKey === this.getCleanId(value.id)) {
-                  // if(!this.oldPurchaseValue.find(i=>i.id===value.id)&& newValues.barCode){
-                  //   value.dropshippingDecimal=newValues.dropshippingDecimal
-                  //   value.eachPrice=newValues.unitPrice
-                  //   this.oldPurchaseValue.push(value)
-                  // }
+                  if(!this.oldPurchaseValue.find(i=>i.id===value.id)&& newValues.barCode){
+                    value.dropshippingDecimal=newValues.dropshippingDecimal
+                    value.eachPrice=newValues.unitPrice
+                    this.oldPurchaseValue.push(value)
+                  }
                   if (value.hasOwnProperty(newValueKey)) {
                     edited = true
                     value[newValueKey] = newValue
@@ -2347,28 +2345,26 @@
         // 触发valueChange 事件
         this.elemValueChange(FormTypes.checkbox, row, column, checked)
       },
-
       handleChangeSelectCommon(value, id, row, column) {
-        // if(this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id)){
-        //   if(value==='batchPurchase'){
-        //     this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
-        //       = this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id).eachPrice
-        //       ||this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
-        //   }
-        //   if(value==='dropshipping'){
-        //     this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
-        //       =this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id).dropshippingDecimal
-        //       || this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
-        //   }
-        // }
-
+        if(this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id)){
+          if(value==='batchPurchase'){
+            this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
+              = this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id).eachPrice
+              ||this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
+          }
+          if(value==='dropshipping'){
+            this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
+              =this.oldPurchaseValue.find(i=>('purchaseType'+i.id)===id).dropshippingDecimal
+              || this.inputValues.find(i=>('purchaseType'+i.id)===id).unitPrice
+          }
+        }
         this.selectValues = this.bindValuesChange(value, id, 'selectValues')
         // 做单个表单验证
         this.validateOneInput(value, row, column, this.notPassedIds, true, 'change')
 
         // 触发valueChange 事件
         this.elemValueChange(FormTypes.select, row, column, value)
-        // this.forceUpdateFormValues()
+        this.forceUpdateFormValues()
       },
       handleChangePopupJshCommon(value, id, row, column,index) {
         this.popupJshValues = this.bindValuesChange(value, id, 'popupJshValues')
@@ -2748,9 +2744,9 @@
       },
       /** select输入框回显 */
       getSelectValue(id) {
-        // if(!this.selectValues[id]&&id.includes('purchaseType')){
-        //   return 'batchPurchase'
-        // }
+        if(!this.selectValues[id]&&id.includes('purchaseType')){
+          return 'batchPurchase'
+        }
         return this.selectValues[id]
       },
       /** popup输入框回显 */
