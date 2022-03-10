@@ -470,11 +470,11 @@
 
             {
               title: '专票税率', key: 'specialTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
-              options: [{text:"1%",value:1},{text:"3%",value:3},{text:"6%",value:6},{text:"9%",value:9},{text:"13%",value:13}]
+              options: [{text:"1%",value:'1'},{text:"3%",value:'3'},{text:"6%",value:'6'},{text:"9%",value:'9'},{text:"13%",value:'13'}]
             },
             {
               title: '普票税率', key: 'normalTaxRate', width: '9%', type: FormTypes.select, defaultValue: '', placeholder: '请输入${title}',
-              options: [{text:"1%",value:1},{text:"3%",value:3},{text:"6%",value:6},{text:"9%",value:9},{text:"13%",value:13}]
+              options: [{text:"1%",value:'1'},{text:"3%",value:'3'},{text:"6%",value:'6'},{text:"9%",value:'9'},{text:"13%",value:'13'}]
 
             },
             {
@@ -609,6 +609,7 @@
         tab.loading = true
         getAction(url, params).then(res => {
           for (let i = 0; i < res.data.rows.length; i++) {
+
             if(res.data.rows[i].sku) {
               this.meTable.columns[2].type = FormTypes.input
             } else {
