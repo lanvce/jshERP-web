@@ -246,7 +246,12 @@
       },
       myHandleSend(record){
         sendDepotItemExcel({id:record.id}).then(res=>{
-          console.log('send')
+          console.log("code:"+res.code)
+          if(res.code === 200) {
+            this.$message.info('发送成功!');
+          }else {
+            this.$message.info('发送失败!');
+          }
         })
       },
     }
