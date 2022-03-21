@@ -58,9 +58,7 @@
         </div>
         <!-- 操作按钮区域 -->
         <div class="table-operator"  style="margin-top: 5px">
-<!--          <a-button v-if="btnEnableList.indexOf(1)>-1" @click="handleAdd" type="primary" icon="plus">新增</a-button>-->
-
-          <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+          <a-button v-if="btnEnableList.indexOf(1)>-1" @click="handleAdd" type="primary" icon="plus">新增</a-button>
           <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
             <a-popover title="表格模板">
               <template slot="content">
@@ -181,7 +179,7 @@
             }
           },
 
-          {title: '规格', dataIndex: 'standard', width: '35%', ellipsis:true},
+          {title: '规格', dataIndex: 'standard', width: '10%', ellipsis:true},
 
           //   {title: '库存', dataIndex: 'stock', width: '5%'},
        //    {title: '供应商', dataIndex: 'supply', width: '5%'},
