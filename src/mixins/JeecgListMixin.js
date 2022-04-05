@@ -24,8 +24,8 @@ export const JeecgListMixin = {
       /* 分页参数 */
       ipagination:{
         current: 1,
-        pageSize: 10,
-        pageSizeOptions: ['10', '20', '30'],
+        pageSize: 100,
+        pageSizeOptions: ['10', '30','50','100','200','500'],
         showTotal: (total, range) => {
           return range[0] + "-" + range[1] + " 共" + total + "条"
         },
