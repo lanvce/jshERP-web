@@ -1229,8 +1229,8 @@
           if(!this.oldPurchaseValue.find(i=>i.id===row.id)&& data.barCode){
             const value={}
             value.id=row.id
-            value.dropshippingDecimal=data.dropshippingDecimal
-            value.eachPrice=data.unitPrice
+            value.dropshippingDecimal=data.dropshippingDecimal||''
+            value.eachPrice=data.unitPrice||''
             this.oldPurchaseValue.push(value)
           }
           let value = { id: dataId }
@@ -1762,8 +1762,8 @@
                 // 在inputValues中找到了该字段
                 if (rowKey === this.getCleanId(value.id)) {
                   if(!this.oldPurchaseValue.find(i=>i.id===value.id)&& newValues.barCode){
-                    value.dropshippingDecimal=newValues.dropshippingDecimal
-                    value.eachPrice=newValues.unitPrice
+                    value.dropshippingDecimal=newValues.dropshippingDecimal||''
+                    value.eachPrice=newValues.unitPrice||''
                     this.oldPurchaseValue.push(value)
                   }
                   if (value.hasOwnProperty(newValueKey)) {
@@ -2364,7 +2364,6 @@
 
         // 触发valueChange 事件
         this.elemValueChange(FormTypes.select, row, column, value)
-        this.forceUpdateFormValues()
       },
       handleChangePopupJshCommon(value, id, row, column,index) {
         this.popupJshValues = this.bindValuesChange(value, id, 'popupJshValues')
